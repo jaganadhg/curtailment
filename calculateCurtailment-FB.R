@@ -3,13 +3,6 @@
 # reads kwh data for all DR events
 # calculates total curtailment for each DR event
 # (uses FB: fixed baseline)
-# plots curtailment on a calendar
-
-library(quantmod)
-library(ggplot2)
-library(reshape2)
-library(plyr)
-library(scales)
 
 # DR event parameters
 beginDR = 54 # 1:15 PM
