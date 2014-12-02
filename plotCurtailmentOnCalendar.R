@@ -92,3 +92,4 @@ for(i in 1:numDays){
 myDF = data.frame(date = eventsAll,
                   curtailment = curtAll)
 write.csv(myDF,"curtailment-BF.csv")
+write.csv(missing,"missingDRdata.csv",row.names=FALSE)
