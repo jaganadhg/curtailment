@@ -91,5 +91,5 @@ for(i in 1:numDays){
 } # done for each DR event day
 myDF = data.frame(date = eventsAll,
                   curtailment = curtAll)
-write.csv(myDF,"curtailment-BF.csv")
+write.csv(myDF,"curtailment-FB.csv")
 write.csv(missing,"missingDRdata.csv",row.names=FALSE)
