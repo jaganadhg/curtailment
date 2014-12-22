@@ -1,4 +1,3 @@
-
 # This script does the following
 # reads kwh data from FTP for each day
 # collects data for nonDR days
@@ -14,6 +13,9 @@ daysInAyear = 350 # or 365 or 366
 username = ""
 pswd = ""
 loc = ""
+username = "fmsguest"
+pswd = "gofms!"
+loc = "@fmsdevwin.usc.edu/Files/Electrical_Dashboard/"
 url = paste("ftp://",username,":",pswd,loc,sep="")
 
 # read building codes
