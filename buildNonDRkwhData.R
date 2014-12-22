@@ -6,34 +6,37 @@
 library(zoo)
 
 setwd("/Users/saima/Desktop/Energy Experiments/gcode/reducedKWH/")
-
+year = 2012 #2013, 2014
+daysInAyear = 366 # or 365 
+  
 # set FTP data
 username = ""
 pswd = ""
-url = paste("ftp://",username,":",pswd,
-            "@fmsdevwin.usc.edu/Files/Electrical_Dashboard/",
-            sep="")
+loc = ""
+url = paste("ftp://",username,":",pswd,loc,sep="")
 
 # read building codes
 bcodes = read.csv("buildingCodes.csv",header=TRUE)
 
 # read event schedule 
-schedule12 = read.csv("DRevents2012.csv")
-schedule13 = read.csv("DRevents2013.csv")
-schedule14 = read.csv("DRevents2014.csv")
-DRschedule = rbind(schedule12,schedule13,schedule14)
+eventFile = paste("DRevents",year,".csv",sep="")
+DRschedule = read.csv(eventFile)
 buildings = unique(DRschedule$Building)
 
-allDates = seq(as.Date("2012-01-01"), by=1, len=sum(366,365,365))
+allDates = seq(as.Date(paste(year,"-01-01",sep="")), by=1, len=daysInAyear)
 numDays = length(allDates)
 
 #----------------------------
-nonDRdates = list()
-nonDRkwh = list()
+# initialize data vectors
+DRdates = vector("list",length(buildings))
+DRkwh = vector("list",length(buildings))
+
+nonDRdates = vector("list",length(buildings))
+nonDRkwh = vector("list",length(buildings))
 
 # do for each day
 #for(i in 1:numDays){
-for(i in 1:10){
+for(i in 1:5){
   
   ithDay = allDates[i]
   cat("\n",format(ithDay,format="%m-%d-%Y"),"\n")
@@ -45,47 +48,41 @@ for(i in 1:10){
   for (j in 1:length(buildings)){
     
     bld = buildings[j]
+    key = bcodes$Building.Key[which(bcodes$Building.Code == as.character(bld))]
+    kwhIndices = which(myData$szCity == key)
+    
+    if (length(kwhIndices) < 90){     # when kwh data is missing, ok until 6 values
+      # don't add, skip this day's data             
+      next
+    }
+    cat(j, as.character(bld), ",")
+    day = myData$timeLogged[kwhIndices]
+    kwh = myData$Total[kwhIndices]
+    # interpolate for missing data
+    kwh = na.fill(kwh, "extend")
+  
     # find all event days for this building
     bldEventDataSlice = subset(DRschedule, Building==bld)
     bldEventDays = as.Date(bldEventDataSlice$Date,"%m/%d/%Y")
-    
-    # skip DR event days
-    if(ithDay %in% bldEventDays){
-      # don't add
-    } else{
-      
-      cat(as.character(bld), ",")
-      # read data for given building
-      key = bcodes$Building.Key[which(bcodes$Building.Code == as.character(bld))]
-      kwhIndices = which(myData$szCity == key)
-      
-      # check data for missing values
-      if (length(kwhIndices) < 90){     # when kwh data is missing, ok until 6 values
-        # don't add, skip this day's data             
-      }else{
-        d = myData$timeLogged[kwhIndices]
-        k = myData$Total[kwhIndices]
-        # interpolate for missing data
-        k = na.fill(k, "extend")            
-        
-        # save in the global nonDRarrays
-        if (i == 1){
-          # first day
-          nonDRdates[[j]] = d
-          nonDRkwh[[j]] = k
-        }else{
-          nonDRdates[[j]] = c(nonDRdates[[j]],d)
-          nonDRkwh[[j]] = c(nonDRkwh[[j]],k)          
-        }
-      }   
-    }
+  
+   if(ithDay %in% bldEventDays){
+     DRdates[[j]] = c(DRdates[[j]],day)
+     DRkwh[[j]] = c(DRkwh[[j]],kwh) 
+   } else{
+     nonDRdates[[j]] = c(nonDRdates[[j]],day)
+     nonDRkwh[[j]] = c(nonDRkwh[[j]],kwh) 
+   }   
   } # done for all buildings
 } # done for all days
 
 # save building-wise
 for (k in 1:length(buildings)){
+  df = data.frame(timestamp = DRdates[[k]],
+                  kwh = DRkwh[[k]])
+  write.csv(df,paste("../DRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
+  
   df = data.frame(timestamp = nonDRdates[[k]],
                   kwh = nonDRkwh[[k]])
-  write.csv(df,paste("../DRdata/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
+  write.csv(df,paste("../nonDRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
   
 }
