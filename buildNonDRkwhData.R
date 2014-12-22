@@ -1,3 +1,4 @@
+
 # This script does the following
 # reads kwh data from FTP for each day
 # collects data for nonDR days
@@ -6,8 +7,8 @@
 library(zoo)
 
 setwd("/Users/saima/Desktop/Energy Experiments/gcode/reducedKWH/")
-year = 2012 #2013, 2014
-daysInAyear = 366 # or 365 
+year = 2014 #2013, 2012
+daysInAyear = 350 # or 365 or 366
   
 # set FTP data
 username = ""
@@ -24,7 +25,6 @@ DRschedule = read.csv(eventFile)
 buildings = unique(DRschedule$Building)
 
 allDates = seq(as.Date(paste(year,"-01-01",sep="")), by=1, len=daysInAyear)
-numDays = length(allDates)
 
 #----------------------------
 # initialize data vectors
@@ -34,9 +34,9 @@ DRkwh = vector("list",length(buildings))
 nonDRdates = vector("list",length(buildings))
 nonDRkwh = vector("list",length(buildings))
 
+missed = NULL
 # do for each day
-#for(i in 1:numDays){
-for(i in 1:5){
+for(i in 1:length(allDates)){
   
   ithDay = allDates[i]
   cat("\n",format(ithDay,format="%m-%d-%Y"),"\n")
@@ -52,7 +52,8 @@ for(i in 1:5){
     kwhIndices = which(myData$szCity == key)
     
     if (length(kwhIndices) < 90){     # when kwh data is missing, ok until 6 values
-      # don't add, skip this day's data             
+      # don't add, skip this day's data
+      missed = c(missed,paste(bld,",",ithDay,sep=""))
       next
     }
     cat(j, as.character(bld), ",")
@@ -77,12 +78,16 @@ for(i in 1:5){
 
 # save building-wise
 for (k in 1:length(buildings)){
-  df = data.frame(timestamp = DRdates[[k]],
-                  kwh = DRkwh[[k]])
-  write.csv(df,paste("../DRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
   
-  df = data.frame(timestamp = nonDRdates[[k]],
+  if(length(DRdates[[k]]) > 0){
+    df = data.frame(timestamp = DRdates[[k]],
+                    kwh = DRkwh[[k]])
+    write.csv(df,paste("../DRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)  
+  }
+  
+  if(length(nonDRdates[[k]]) > 0){
+    df = data.frame(timestamp = nonDRdates[[k]],
                   kwh = nonDRkwh[[k]])
-  write.csv(df,paste("../nonDRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
-  
+    write.csv(df,paste("../nonDRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
+  }
 }
