@@ -1,13 +1,13 @@
 # This script does the following
 # reads kwh data from FTP for each day
 # collects data for nonDR days
-# stores nonDR data per building
+# stores nonDR and DRdata per building
 
 library(zoo)
 
 setwd("/Users/saima/Desktop/Energy Experiments/gcode/reducedKWH/")
-year = 2014 #2013, 2012
-daysInAyear = 350 # or 365 or 366
+year = 2013 #2013, 2012
+daysInAyear = 365 # or 365 or 366
   
 # set FTP data
 username = ""
@@ -93,3 +93,6 @@ for (k in 1:length(buildings)){
     write.csv(df,paste("../nonDRdays/",year,"/",as.character(buildings[k]),".csv",sep=""),row.names=FALSE)
   }
 }
+
+# save missed
+write.csv(missed,paste("missedDRdays",year,".csv",sep=""),row.names=FALSE)
