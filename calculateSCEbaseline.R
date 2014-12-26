@@ -4,9 +4,11 @@
 # calculates baseline for each DR event
 # (uses SCE: socal edison baseline)
 
+#year = 2014
+#firstDayOfYear = paste("01/01/",year,sep="")
 firstDayOfData = "01/01/2012"
 startDR = "13:00"
-intStart = "14:00" 
+intStart = "14:00" # same as DR
 endDR = "17:00"
 adjustStart = as.numeric("16")
 adjustDur = as.numeric("12")
@@ -37,20 +39,22 @@ DRschedule2013 = read.csv("DRevents2013.csv")
 DRschedule2014 = read.csv("DRevents2014.csv")
 DRschedule = rbind(DRschedule2012,DRschedule2013,DRschedule2014)
 eventDays = unique(DRschedule$Date)
+#-----------------
 
 # do for each DR event day
-for(id in 1:length(eventDays)){
+for(id in 1:5){
+#  for(id in 1:length(eventDays)){
   
   ithDay = eventDays[id]
-  year = substr(ithDay,7,10)
+  cat("\n", as.character(ithDay), "\n")
+  year = substr(ithDay,nchar(as.character(ithDay))-3,nchar(as.character(ithDay)))
   ithDayBuildings = subset(DRschedule,Date == ithDay)
   buildlist = ithDayBuildings$Building
   
+  # set date and timings of the DR day
   startString = paste(ithDay," ",startDR,sep="")
   intStartString = paste(ithDay," ",intStart,sep="")
   endString = paste(ithDay," ",endDR,sep="")  
-  
-  # set date and timings of the DR day
   startDate = strsplit(startString," ")[[1]][1]
   startTime = strsplit(startString," ")[[1]][2]
   endDate = strsplit(endString," ")[[1]][1]
@@ -71,18 +75,18 @@ for(id in 1:length(eventDays)){
   morningIdxEnd = morningIdxStart + (adjustDur - 1)
   morningLength = morningIdxEnd - morningIdxStart + 1    
   
+  # initialize arrays for the ith event day
   output1 = array(dim=c(length(buildlist),intEventLength))
   output2 = array(dim=c(length(buildlist),DREventLength))
-  
-  #-----------------
-  past10dates = seq( as.Date("2013-01-01"), by=1, len=10)
+  past10dates = seq(as.Date("2013-01-01"), by=1, len=10)
   past10daysDRdata = array(dim=c(10,DREventLength))
   past10daysMRdata = array(dim=c(10,12))
   buildings = array(dim=c(0,0))
   
+  # do for all buildings that had DR on the ith DR day
   for (indx in 1:length(buildlist)){
     
-    cat("building#: ", indx, " ", buildlist[indx], "\n")
+    cat("\n",indx, ":", as.character(buildlist[indx]), ", ")
     inFile = paste("../nonDRdays/",year,"/",buildlist[indx],".csv",sep="")
     readData = read.csv(inFile, header = TRUE, skip = 1)
     
@@ -133,6 +137,7 @@ for(id in 1:length(eventDays)){
           kWhMRData = readData[readStart:readEnd,2]
         }
         
+        # determine if an appropriate previous date found
         if (!(length(kWhDRData) != DREventLength) && 
               !(length(kWhMRData) != morningLength)){
           if (!(-1 %in% kWhDRData) && !(-1 %in% kWhMRData)) {     
@@ -140,6 +145,7 @@ for(id in 1:length(eventDays)){
             past10dates[daysFound] = as.Date(currentPrevDate)
             past10daysDRdata[daysFound,] = kWhDRData
             past10daysMRdata[daysFound,] = kWhMRData
+            cat(as.character(currentPrevDate), ",")
           }
         }
       }
@@ -156,20 +162,21 @@ for(id in 1:length(eventDays)){
     if(notFound == TRUE){
       next
     }
-    cat(" days found = ", daysFound, "\n")
-    
     if (validData == TRUE){
       prev_morning_avg = apply(past10daysMRdata, 2, mean, na.rm = TRUE)
       adjustfactor = sum(DRMorningData)/sum(prev_morning_avg)
     }else{
       adjustfactor <= 1
-    }  
+    } 
+    
+    # calculate baselines
     unadj_baseline = apply(past10daysDRdata, 2, mean, na.rm = TRUE)
     output1[indx,] = adjustfactor * unadj_baseline[(length(unadj_baseline)-intEventLength+1):length(unadj_baseline)]
     output2[indx,] = adjustfactor * unadj_baseline
     
   }  # done for all buildings
   
+  # save baseline data for the ith DR day
   opDF = data.frame(buildings,output2)
   opFile = paste("edison/",as.Date(ithDay, format="%m/%d/%Y"),".csv",sep="")
   write.csv(opDF, opFile, row.names = FALSE)
