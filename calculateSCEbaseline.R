@@ -42,8 +42,8 @@ eventDays = unique(DRschedule$Date)
 #-----------------
 
 # do for each DR event day
-for(id in 1:5){
-#  for(id in 1:length(eventDays)){
+#for(id in 1:5){
+for(id in 64:length(eventDays)){
   
   ithDay = eventDays[id]
   cat("\n", as.character(ithDay), "\n")
@@ -86,9 +86,14 @@ for(id in 1:5){
   # do for all buildings that had DR on the ith DR day
   for (indx in 1:length(buildlist)){
     
-    cat("\n",indx, ":", as.character(buildlist[indx]), ", ")
+    cat(as.character(buildlist[indx]), ", ")
+    buildings = c(buildings,as.character(buildlist[indx]))
     inFile = paste("../nonDRdays/",year,"/",buildlist[indx],".csv",sep="")
-    readData = read.csv(inFile, header = TRUE, skip = 1)
+    if(file.exists(inFile)){
+      readData = try(read.csv(inFile, header = TRUE, skip = 1))      
+    }else{
+      next
+    }
     
     currentPrevDate = targetDate - 1
     daysFound = 0
@@ -101,7 +106,6 @@ for(id in 1:5){
     
     validData = FALSE
     DRMorningData = 0
-    buildings = c(buildings,as.character(buildlist[indx]))
     
     # read data for the DR morning (9:15 am to 12 noon)
     if (length(readStart) != 0 && length(readEnd) != 0){
@@ -145,7 +149,7 @@ for(id in 1:5){
             past10dates[daysFound] = as.Date(currentPrevDate)
             past10daysDRdata[daysFound,] = kWhDRData
             past10daysMRdata[daysFound,] = kWhMRData
-            cat(as.character(currentPrevDate), ",")
+            #cat(as.character(currentPrevDate), ",")
           }
         }
       }
