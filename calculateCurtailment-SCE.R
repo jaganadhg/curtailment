@@ -27,7 +27,7 @@ DRdata = rbind(data12,data13,data14)
 eventDays = unique(DRdata$Date)
 numDays = length(eventDays)
 
-#-------------
+#-------------------------
 # do for each DR event day
 missing = NULL # DR days skipped
 curtAll = NULL
@@ -97,10 +97,7 @@ eventsAll = NULL
   
 } # done for each DR event day
 
-
-
-
 myDF = data.frame(date = eventsAll,
                   curtailment = curtAll)
-write.csv(myDF,"curtailment-FB.csv")
-write.csv(missing,"missingDRdata.csv",row.names=FALSE)
+write.csv(myDF,"curtailment-SCE.csv")
+write.csv(missing,"missingDRdata-SCE.csv",row.names=FALSE)
