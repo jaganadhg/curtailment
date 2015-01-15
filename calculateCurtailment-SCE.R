@@ -11,8 +11,6 @@ endDR = 69 # 5:00 PM
 # set FTP data
 username = ""
 pswd = ""
-username = "fmsguest"
-pswd = "gofms!"
 url = paste("ftp://",username,":",pswd,
             "@fmsdevwin.usc.edu/Files/Electrical_Dashboard/",
             sep="")
@@ -29,12 +27,13 @@ DRdata = rbind(data12,data13,data14)
 eventDays = unique(DRdata$Date)
 numDays = length(eventDays)
 
+#-------------
 # do for each DR event day
 missing = NULL # DR days skipped
 curtAll = NULL
 eventsAll = NULL
 #for(i in 1:numDays){
-  for(i in 1:5){
+  for(i in 1:15){
     
   cat("i = ", i, "day =", as.character(eventDays[i]),"\n")
   dataSlice = subset(DRdata, Date==eventDays[i])
@@ -58,11 +57,12 @@ eventsAll = NULL
   numMissed = 0
   cat("doing buildings: ")
   for (j in 1:dim(dataSlice)[1]){
-    cat(j, ",")
     bldng = as.character(dataSlice$Building[j])
     strategy = as.character(dataSlice$Strategy[j])
     key = bcodes$Building.Key[which(bcodes$Building.Code == bldng)]
     kwhIndices = which(myDataObs$szCity == key)
+    
+    cat(bldng, ",")
     
     # check data for missing values
     if (length(kwhIndices) < 90){     # when kwh data is missing
