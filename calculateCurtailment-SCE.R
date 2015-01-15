@@ -32,10 +32,10 @@ numDays = length(eventDays)
 missing = NULL # DR days skipped
 curtAll = NULL
 eventsAll = NULL
-#for(i in 1:numDays){
-  for(i in 1:15){
+for(i in 1:numDays){
+#  for(i in 1:5){
     
-  cat("i = ", i, "day =", as.character(eventDays[i]),"\n")
+  cat("*****day", i,"-", as.character(eventDays[i]),"\n")
   dataSlice = subset(DRdata, Date==eventDays[i])
   eventDate = as.Date(dataSlice$Date[1],"%m/%d/%Y")
   
@@ -55,20 +55,21 @@ eventsAll = NULL
   # do for individual buildings on the DR day
   totalCurtailment = 0
   numMissed = 0
-  cat("doing buildings: ")
+  cat("buildings ")
   for (j in 1:dim(dataSlice)[1]){
     bldng = as.character(dataSlice$Building[j])
     strategy = as.character(dataSlice$Strategy[j])
     key = bcodes$Building.Key[which(bcodes$Building.Code == bldng)]
     kwhIndices = which(myDataObs$szCity == key)
     
-    cat(bldng, ",")
+    cat(",", bldng)
     
     # check data for missing values
     if (length(kwhIndices) < 90){     # when kwh data is missing
       missed = c(bldng,as.character(eventDate),strategy)
       missing = rbind(missing,missed) # save missed data info
       numMissed = numMissed + 1
+      cat("-skipped,")
       next   # skip for this building; move to next             
     } 
     kwh = myDataObs$Total[kwhIndices]
@@ -96,7 +97,9 @@ eventsAll = NULL
   eventsAll = rbind(eventsAll,as.character(eventDate))
   
 } # done for each DR event day
+#---------------
 
+# frame and save
 myDF = data.frame(date = eventsAll,
                   curtailment = curtAll)
 write.csv(myDF,"curtailment-SCE.csv")
