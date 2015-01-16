@@ -1,0 +1,544 @@
+
+*****day 1 - 11/26/2012 
+buildings , BKS, MHP, MRF, SCB, WAH
+ Total curtailment =  457.2109 
+*****day 2 - 11/28/2012 
+buildings , BKS-skipped,, MHP-skipped,, MRF-skipped,, SCB-skipped,, WAH-skipped,
+ Total curtailment =  0 
+*****day 3 - 11/30/2012 
+buildings , BKS, MHP, MRF, SCB, WAH
+ Total curtailment =  581.5882 
+*****day 4 - 12/4/2012 
+buildings , BKS, MHP, MRF, SCB, WAH
+ Total curtailment =  439.9019 
+*****day 5 - 12/6/2012 
+buildings , BKS, MHP, MRF, SCB, WAH
+ Total curtailment =  511.2092 
+*****day 6 - 4/13/2012 
+buildings , LVL
+ Total curtailment =  671.4831 
+*****day 7 - 4/17/2012 
+buildings , LVL
+ Total curtailment =  -281.127 
+*****day 8 - 4/19/2012 
+buildings , LVL
+ Total curtailment =  -10.27292 
+*****day 9 - 4/9/2012 
+buildings , LVL
+ Total curtailment =  -18.39491 
+*****day 10 - 5/16/2012 
+buildings , LVL
+ Total curtailment =  29.29387 
+*****day 11 - 6/18/2012 
+buildings , LVL-skipped,, SCB-skipped,, TCC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 12 - 6/20/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  276.2703 
+*****day 13 - 6/22/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  300.3554 
+*****day 14 - 6/11/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  -94.60812 
+*****day 15 - 6/13/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  -167.2515 
+*****day 16 - 6/15/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  397.8227 
+*****day 17 - 5/14/2012 
+buildings , LVL
+ Total curtailment =  486.4078 
+*****day 18 - 5/18/2012 
+buildings , LVL
+ Total curtailment =  644.5197 
+*****day 19 - 6/25/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  114.9654 
+*****day 20 - 6/27/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  230.7739 
+*****day 21 - 6/29/2012 
+buildings , LVL, SCB, TCC, VKC
+ Total curtailment =  932.7667 
+*****day 22 - 7/23/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  440.1731 
+*****day 23 - 7/25/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  552.1002 
+*****day 24 - 7/27/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  807.6684 
+*****day 25 - 7/31/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  615.7641 
+*****day 26 - 8/2/2012 
+buildings , LVL, MHP, SCB, TCC, VKC
+ Total curtailment =  285.7242 
+*****day 27 - 1/19/2012 
+buildings , MHP
+ Total curtailment =  NA 
+*****day 28 - 1/24/2012 
+buildings , MHP
+ Total curtailment =  -3.588962 
+*****day 29 - 1/26/2012 
+buildings , MHP
+ Total curtailment =  -2.700856 
+*****day 30 - 6/6/2012 
+buildings , MHP
+ Total curtailment =  34.13181 
+*****day 31 - 1/17/2012 
+buildings , MHP-skipped,
+ Total curtailment =  0 
+*****day 32 - 4/10/2012 
+buildings , MHP
+ Total curtailment =  24.27761 
+*****day 33 - 4/12/2012 
+buildings , MHP
+ Total curtailment =  33.78145 
+*****day 34 - 4/18/2012 
+buildings , MHP
+ Total curtailment =  17.17929 
+*****day 35 - 4/2/2012 
+buildings , MHP
+ Total curtailment =  17.10079 
+*****day 36 - 4/6/2012 
+buildings , MHP
+ Total curtailment =  38.27797 
+*****day 37 - 1/23/2012 
+buildings , SCB
+ Total curtailment =  -13.28739 
+*****day 38 - 1/27/2012 
+buildings , SCB
+ Total curtailment =  5.475155 
+*****day 39 - 4/23/2012 
+buildings , SCB
+ Total curtailment =  -11.60826 
+*****day 40 - 4/25/2012 
+buildings , SCB
+ Total curtailment =  11.11336 
+*****day 41 - 4/27/2012 
+buildings , SCB
+ Total curtailment =  30.77321 
+*****day 42 - 5/15/2012 
+buildings , SCB
+ Total curtailment =  42.68094 
+*****day 43 - 5/17/2012 
+buildings , SCB
+ Total curtailment =  47.25855 
+*****day 44 - 1/25/2012 
+buildings , SCB
+ Total curtailment =  -12.54531 
+*****day 45 - 12/10/2012 
+buildings , SCB
+ Total curtailment =  87.57589 
+*****day 46 - 12/12/2012 
+buildings , SCB-skipped,
+ Total curtailment =  0 
+*****day 47 - 12/14/2012 
+buildings , SCB
+ Total curtailment =  81.80253 
+*****day 48 - 5/22/2012 
+buildings , SCB
+ Total curtailment =  44.14582 
+*****day 49 - 5/24/2012 
+buildings , SCB
+ Total curtailment =  49.37285 
+*****day 50 - 5/30/2012 
+buildings , SCB
+ Total curtailment =  28.24969 
+*****day 51 - 6/4/2012 
+buildings , SCB
+ Total curtailment =  41.27054 
+*****day 52 - 6/8/2012 
+buildings , SCB
+ Total curtailment =  34.96128 
+*****day 53 - 5/21/2012 
+buildings , TCC
+ Total curtailment =  289.4611 
+*****day 54 - 5/23/2012 
+buildings , TCC
+ Total curtailment =  274.6688 
+*****day 55 - 5/25/2012 
+buildings , TCC
+ Total curtailment =  226.0314 
+*****day 56 - 5/29/2012 
+buildings , TCC
+ Total curtailment =  195.0314 
+*****day 57 - 5/31/2012 
+buildings , TCC
+ Total curtailment =  235.992 
+*****day 58 - 6/5/2012 
+buildings , TCC
+ Total curtailment =  -30.69516 
+*****day 59 - 6/7/2012 
+buildings , TCC
+ Total curtailment =  -50.69516 
+*****day 60 - 1/23/2013 
+buildings , ALM, HSH, SCB, SCC, SCE, SOS, TCC, VKC
+ Total curtailment =  -377.807 
+*****day 61 - 1/25/2013 
+buildings , ALM, HSH, SCB, SCC, SCE, SOS, TCC, VKC
+ Total curtailment =  105.3776 
+*****day 62 - 1/29/2013 
+buildings , ALM, HSH, SCB, SCC, SCE, SOS, TCC, VKC
+ Total curtailment =  151.9483 
+*****day 63 - 1/31/2013 
+buildings , ALM, HSH, SCB, SCC, SCE, SOS, TCC, VKC
+ Total curtailment =  -156.7441 
+*****day 64 - 10/22/2013 
+buildings , ALM, ASC, BHE, BKS, BRI, DRB, EEB, ESH-skipped,, GFS, HAR, HOH, HSH, JHH, JKP, KAP, LAW, LRC, LVL, MHP, MRF, OHE, RGL, SAL, SCB, SCC, SCE, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WAH, WPH
+ Total curtailment =  2061.165 
+*****day 65 - 10/24/2013 
+buildings , ALM, ASC-skipped,, BHE, BKS, BRI, DRB, EEB, ESH-skipped,, GFS, HAR, HOH, HSH, JHH, JKP, KAP, LAW, LRC, LVL, MHP, MRF, OHE, RGL, SAL, SCB, SCC, SCE, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WAH, WPH
+ Total curtailment =  2137.718 
+*****day 66 - 12/2/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, LVL, OHE, SAL, SCB, SCX, SOS-skipped,, SWC, TCC, THH, VKC, WPH-skipped,
+ Total curtailment =  1492.579 
+*****day 67 - 12/4/2013 
+buildings , ALM, BRI-skipped,, DRB, GFS, HAR, HOH, HSH, KAP, LRC, LVL, OHE, SAL, SCB-skipped,, SCX-skipped,, SOS-skipped,, SWC, TCC, THH-skipped,, VKC, WPH-skipped,
+ Total curtailment =  1617.543 
+*****day 68 - 12/6/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, LVL, OHE, SAL, SCB, SCX, SOS-skipped,, SWC, TCC, THH, VKC, WPH-skipped,
+ Total curtailment =  2183.588 
+*****day 69 - 2/26/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  167.5915 
+*****day 70 - 2/28/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  -49.05921 
+*****day 71 - 3/12/2013 
+buildings , ALM, BKS, EEB, GFS, HOH, HSH, KAP, MRF, SCB, SCC, SCE, SOS, SWC, TCC, VKC, WAH
+ Total curtailment =  1872.825 
+*****day 72 - 3/14/2013 
+buildings , ALM-skipped,, BKS-skipped,, EEB-skipped,, GFS-skipped,, HOH-skipped,, HSH-skipped,, KAP-skipped,, MRF-skipped,, SCB-skipped,, SCC-skipped,, SCE-skipped,, SOS-skipped,, SWC-skipped,, TCC-skipped,, VKC-skipped,, WAH-skipped,
+ Total curtailment =  0 
+*****day 73 - 3/4/2013 
+buildings , ALM, BKS, EEB, GFS, HOH, HSH, KAP, MRF, SCB, SCC, SCE, SOS, SWC, TCC, VKC, WAH
+ Total curtailment =  1306.226 
+*****day 74 - 3/6/2013 
+buildings , ALM, BKS, EEB, GFS, HOH, HSH, KAP, MRF, SCB, SCC, SCE, SOS, SWC, TCC, VKC, WAH
+ Total curtailment =  1486.278 
+*****day 75 - 3/8/2013 
+buildings , ALM, BKS, EEB, GFS, HOH, HSH, KAP, MRF, SCB, SCC, SCE, SOS, SWC, TCC, VKC, WAH
+ Total curtailment =  1990.815 
+*****day 76 - 3/18/2013 
+buildings , ALM, ASC, BHE, BRI, DRB, GFS, HAR, HOH, HSH, JHH-skipped,, JKP, KAP, LAW, LRC-skipped,, LVL, MHP, OHE, SAL, SCB, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  2366.088 
+*****day 77 - 3/20/2013 
+buildings , ALM, ASC, BHE, BRI, DRB, GFS, HAR, HOH, HSH, JHH-skipped,, JKP, KAP, LAW, LRC-skipped,, LVL, MHP, OHE, SAL, SCB, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  3878.98 
+*****day 78 - 3/22/2013 
+buildings , ALM, ASC, BHE, BRI, DRB, GFS, HAR, HOH, HSH, JHH-skipped,, JKP, KAP, LAW, LRC-skipped,, LVL, MHP, OHE, SAL, SCB, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  3954.716 
+*****day 79 - 3/26/2013 
+buildings , ALM, ASC, BHE, BRI, DRB, GFS, HAR, HOH, HSH, JHH-skipped,, JKP, KAP, LAW, LRC-skipped,, LVL, MHP, OHE, SAL, SCB, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1049.34 
+*****day 80 - 3/28/2013 
+buildings , ALM, ASC, BHE, BRI, DRB, GFS, HAR, HOH, HSH, JHH-skipped,, JKP, KAP, LAW, LRC-skipped,, LVL, MHP, OHE, SAL, SCB, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1255.789 
+*****day 81 - 11/11/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, LVL, OHE, SAL, SCB, SCX, SOS, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1782.828 
+*****day 82 - 11/13/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, LVL, OHE, SAL, SCB, SCX, SOS, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1759.886 
+*****day 83 - 11/15/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, LVL, OHE, SAL, SCB, SCX, SOS-skipped,, SWC, TCC, THH, VKC, WPH-skipped,
+ Total curtailment =  2267.275 
+*****day 84 - 11/19/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, LVL, OHE, SAL, SCB, SCX, SOS-skipped,, SWC, TCC, THH, VKC, WPH-skipped,
+ Total curtailment =  2017.26 
+*****day 85 - 11/21/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, LVL, OHE, SAL, SCB, SCX, SOS-skipped,, SWC, TCC, THH, VKC, WPH-skipped,
+ Total curtailment =  1959.724 
+*****day 86 - 4/1/2013 
+buildings , ALM, ASC, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, OHE, SAL, SCB, SCX, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1300.674 
+*****day 87 - 4/11/2013 
+buildings , ALM, ASC, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, OHE, SAL, SCB, SCX, SOS, STU, TCC, THH, VKC, WPH
+ Total curtailment =  1150.208 
+*****day 88 - 4/3/2013 
+buildings , ALM, ASC, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, OHE, SAL, SCB, SCX, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1071.781 
+*****day 89 - 4/5/2013 
+buildings , ALM, ASC, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, OHE, SAL, SCB, SCX, SOS, STU, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  2501.45 
+*****day 90 - 4/9/2013 
+buildings , ALM, ASC, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, OHE, SAL, SCB, SCX, SOS, STU, TCC, THH, VKC, WPH
+ Total curtailment =  1325.025 
+*****day 91 - 10/28/2013 
+buildings , ALM, ASC-skipped,, BHE, BKS, BRI, DRB, EEB, ESH-skipped,, GFS, HAR, HOH, HSH, JHH, JKP, KAP, LAW, LRC, LVL, MHP, MRF, OHE, RGL, SAL, SCB, SCC, SCE, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WAH, WPH
+ Total curtailment =  2908.088 
+*****day 92 - 10/30/2013 
+buildings , ALM-skipped,, ASC-skipped,, BHE-skipped,, BKS-skipped,, BRI-skipped,, DRB-skipped,, EEB-skipped,, ESH-skipped,, GFS-skipped,, HAR-skipped,, HOH-skipped,, HSH-skipped,, JHH-skipped,, JKP-skipped,, KAP-skipped,, LAW-skipped,, LRC-skipped,, LVL-skipped,, MHP-skipped,, MRF-skipped,, OHE-skipped,, RGL-skipped,, SAL-skipped,, SCB-skipped,, SCC-skipped,, SCE-skipped,, SCX-skipped,, SLH-skipped,, SOS-skipped,, STU-skipped,, SWC-skipped,, TCC-skipped,, THH-skipped,, VKC-skipped,, WAH-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 93 - 11/1/2013 
+buildings , ALM, ASC-skipped,, BHE, BKS, BRI, DRB, EEB, ESH-skipped,, GFS, HAR, HOH, HSH, JHH, JKP, KAP, LAW, LRC, LVL, MHP, MRF, OHE, RGL, SAL, SCB, SCC, SCE, SCX, SLH, SOS, STU, SWC, TCC, THH, VKC, WAH, WPH
+ Total curtailment =  2977.95 
+*****day 94 - 11/5/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC, LVL, OHE, SAL, SCB, SCX, SOS, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1878.295 
+*****day 95 - 11/7/2013 
+buildings , ALM, BRI, DRB, GFS, HAR, HOH, HSH, KAP, LRC-skipped,, LVL, OHE, SAL, SCB, SCX, SOS, SWC, TCC, THH, VKC, WPH
+ Total curtailment =  1164.821 
+*****day 96 - 2/12/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  451.8221 
+*****day 97 - 2/14/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  358.5383 
+*****day 98 - 2/4/2013 
+buildings , ALM, HSH, SCB, SCC, SCE, SOS, TCC, VKC
+ Total curtailment =  -134.6544 
+*****day 99 - 2/6/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  322.9692 
+*****day 100 - 2/8/2013 
+buildings , ALM, HSH, SOS, TCC, VKC
+ Total curtailment =  617.3923 
+*****day 101 - 4/15/2013 
+buildings , ASC, BRI, DRB, HAR, LRC, OHE, SAL, SCX, STU, THH, VKC, WPH
+ Total curtailment =  1310.964 
+*****day 102 - 4/17/2013 
+buildings , ASC, BRI, DRB, HAR, LRC, OHE, SAL, SCX, STU, THH, VKC, WPH
+ Total curtailment =  1229.472 
+*****day 103 - 4/19/2013 
+buildings , ASC, BRI, DRB, HAR, LRC, OHE, SAL, SCX, STU, THH, VKC, WPH
+ Total curtailment =  1374.223 
+*****day 104 - 4/23/2013 
+buildings , ASC, BRI, DRB, HAR, LRC, OHE, SAL, SCX, STU, THH, VKC, WPH
+ Total curtailment =  986.3032 
+*****day 105 - 4/25/2013 
+buildings , ASC, BRI, DRB, HAR, LRC, OHE, SAL, SCX, STU, THH, VKC, WPH
+ Total curtailment =  1299.781 
+*****day 106 - 5/20/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  254.6222 
+*****day 107 - 5/22/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  1188.66 
+*****day 108 - 5/24/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  1380.682 
+*****day 109 - 5/28/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  835.5521 
+*****day 110 - 5/30/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  852.6661 
+*****day 111 - 6/9/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  975.1701 
+*****day 112 - 6/3/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  955.9565 
+*****day 113 - 6/5/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  1092.195 
+*****day 114 - 6/7/2013 
+buildings , ASC, LRC, LVL, WPH
+ Total curtailment =  633.8778 
+*****day 115 - 6/10/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  -45.32988 
+*****day 116 - 6/12/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  -15.8692 
+*****day 117 - 6/14/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  117.8235 
+*****day 118 - 6/18/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  356.2704 
+*****day 119 - 6/20/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  384.1547 
+*****day 120 - 6/24/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  506.6095 
+*****day 121 - 6/26/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  327.1737 
+*****day 122 - 6/28/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  261.4037 
+*****day 123 - 7/11/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  145.2884 
+*****day 124 - 7/9/2013 
+buildings , ASC, LRC, WPH
+ Total curtailment =  -154.3588 
+*****day 125 - 9/23/2013 
+buildings , DRB, GFS, OHE
+ Total curtailment =  1.748171 
+*****day 126 - 9/24/2013 
+buildings , EEB, HOH, SWC
+ Total curtailment =  174.6518 
+*****day 127 - 9/26/2013 
+buildings , EEB, GFS, HOH, KAP, SWC
+ Total curtailment =  241.1618 
+*****day 128 - 2/25/2013 
+buildings , GFS, HOH, KAP, SWC
+ Total curtailment =  119.3969 
+*****day 129 - 2/27/2013 
+buildings , GFS, HOH, KAP, SWC
+ Total curtailment =  168.3518 
+*****day 130 - 3/1/2013 
+buildings , GFS, HOH, KAP, SWC
+ Total curtailment =  269.2476 
+*****day 131 - 6/11/2013 
+buildings , LVL
+ Total curtailment =  665.8504 
+*****day 132 - 6/13/2013 
+buildings , LVL
+ Total curtailment =  668.799 
+*****day 133 - 1/15/2013 
+buildings , SCB
+ Total curtailment =  NA 
+*****day 134 - 1/17/2013 
+buildings , SCB
+ Total curtailment =  NA 
+*****day 135 - 4/30/2014 
+buildings , ALM, ASC, BHE-skipped,, BKS, BRI, DRB, EEB, ESH-skipped,, GFS, HOH, HSH-skipped,, JHH, JKP, LAW, LRC-skipped,, LVL, MHP, MRF, OHE-skipped,, SAL, SCB, SCC, SCE, SCX, SLH, SOS-skipped,, STU, SWC, TCC, THH, VKC-skipped,, WAH, WPH-skipped,
+ Total curtailment =  1631.638 
+*****day 136 - 5/19/2014 
+buildings , ALM, BHE-skipped,, BRI, CDF-skipped,, EEB, HAR, HSH-skipped,, JKP, LAW, LVL, MRF, RGL, SCB, SCE, SLH, STU, TCC, VKC-skipped,, WPH-skipped,
+ Total curtailment =  2242.065 
+*****day 137 - 5/2/2014 
+buildings , ALM-skipped,, ASC-skipped,, BHE-skipped,, BKS-skipped,, BRI-skipped,, DRB-skipped,, EEB-skipped,, ESH-skipped,, GFS-skipped,, HOH-skipped,, HSH-skipped,, JHH-skipped,, JKP-skipped,, LAW-skipped,, LRC-skipped,, LVL-skipped,, MHP-skipped,, MRF-skipped,, OHE-skipped,, SAL-skipped,, SCB-skipped,, SCC-skipped,, SCE-skipped,, SCX-skipped,, SLH-skipped,, SOS-skipped,, STU-skipped,, SWC-skipped,, TCC-skipped,, THH-skipped,, VKC-skipped,, WAH-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 138 - 5/21/2014 
+buildings , ALM, BHE-skipped,, BRI, CDF-skipped,, EEB, HAR, HSH-skipped,, JKP, LAW, LVL, MRF, RGL, SCB, SCE, SLH, STU, TCC, VKC-skipped,, WPH-skipped,
+ Total curtailment =  2354.066 
+*****day 139 - 7/25/2014 
+buildings , ALM, ASC, BKS, DRB-skipped,, GFS, HSH, KAP-skipped,, OHE-skipped,, SCB, STU, TCC
+ Total curtailment =  557.0334 
+*****day 140 - 8/11/2014 
+buildings , ALM, ASC, BKS, STU
+ Total curtailment =  219.9263 
+*****day 141 - 8/18/2014 
+buildings , ALM, ASC, BKS, DRB-skipped,, HSH, OHE-skipped,, STU
+ Total curtailment =  275.1586 
+*****day 142 - 8/20/2014 
+buildings , ALM, ASC, BKS, SCB, STU
+ Total curtailment =  -7.663962 
+*****day 143 - 9/16/2014 
+buildings , ALM, ASC, BHE-skipped,, BKS, BRI, CAL-skipped,, CDF-skipped,, DML, DRB-skipped,, EEB, ESH-skipped,, GER-skipped,, GFS-skipped,, HAR, HNB, HSH, JHH, JKP, JMC-skipped,, KAM, KAP-skipped,, LAW, LRC, MHP, MRF, OHE-skipped,, RGL, SCB, SCE, SCI-skipped,, SCX, SLH, SOS-skipped,, STU, SWC, TCC-skipped,, THH, WAH
+ Total curtailment =  1095.286 
+*****day 144 - 9/17/2014 
+buildings , ALM, ASC, BHE-skipped,, BKS, BRI, CAL-skipped,, CDF-skipped,, DML, DRB-skipped,, EEB, ESH-skipped,, GER-skipped,, GFS, HAR, HNB, HSH-skipped,, JHH, JKP, JMC-skipped,, KAM, LAW, LRC, MHP, MRF, OHE-skipped,, RGL, SAL, SCB, SCE, SCI-skipped,, SCX, SLH, SOS-skipped,, STU, SWC, TCC, THH, VKC, WAH, WPH
+ Total curtailment =  1085.039 
+*****day 145 - 9/23/2014 
+buildings , ALM, ASC, BHE-skipped,, BKS, BRI, CAL-skipped,, CDF-skipped,, DML, DRB-skipped,, EEB, ESH-skipped,, GER-skipped,, GFS, HNB, HSH, JKP, JMC-skipped,, KAM, KAP-skipped,, LAW, LRC, MHP, MRF, OHE-skipped,, RGL, SAL, SCB, SCE, SCI-skipped,, SCX, SLH, STU, SWC, TCC, THH, WAH, WPH
+ Total curtailment =  1884.684 
+*****day 146 - 9/26/2014 
+buildings , ALM, ASC, BHE-skipped,, BKS, CAL-skipped,, CDF-skipped,, DML, EEB, ESH-skipped,, GER-skipped,, HNB, JKP-skipped,, JMC-skipped,, KAM, LAW, MHP, MRF, RGL, SAL, SCB, SCC, SCE, SCI-skipped,, SLH, STU, TCC, WAH
+ Total curtailment =  2044.718 
+*****day 147 - 5/20/2014 
+buildings , ASC, BKS, DRB, ESH-skipped,, GFS, JHH, KAP, LRC-skipped,, MHP, OHE-skipped,, SAL, SCC, SCX, SOS-skipped,, SWC, THH, WAH
+ Total curtailment =  1614.592 
+*****day 148 - 5/22/2014 
+buildings , ASC, BKS, DRB, ESH-skipped,, GFS, JHH, KAP, LRC-skipped,, MHP, OHE-skipped,, SAL, SCC, SCX, SOS-skipped,, SWC, THH, WAH
+ Total curtailment =  1576.229 
+*****day 149 - 9/10/2014 
+buildings , CDF-skipped,, DML, ESH-skipped,, GER-skipped,, HNB, JMC-skipped,, KAM, SCI-skipped,
+ Total curtailment =  335.501 
+*****day 150 - 9/12/2014 
+buildings , CDF-skipped,, DML, ESH-skipped,, GER-skipped,, HNB, JMC-skipped,, KAM, SCI-skipped,
+ Total curtailment =  99.4079 
+*****day 151 - 9/8/2014 
+buildings , CDF-skipped,, DML, ESH-skipped,, GER-skipped,, HNB, JMC-skipped,, KAM, SCI-skipped,
+ Total curtailment =  328.6325 
+*****day 152 - 4/29/2014 
+buildings , HAR, KAP, RGL
+ Total curtailment =  155.1947 
+*****day 153 - 5/1/2014 
+buildings , HAR, KAP, RGL
+ Total curtailment =  130.8541 
+*****day 154 - 2/10/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 155 - 2/12/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 156 - 2/14/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 157 - 2/18/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 158 - 2/20/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 159 - 1/7/2014 
+buildings , LRC, VKC-skipped,
+ Total curtailment =  NA 
+*****day 160 - 1/9/2014 
+buildings , LRC, VKC-skipped,
+ Total curtailment =  NA 
+*****day 161 - 2/24/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 162 - 2/26/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 163 - 2/28/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 164 - 1/13/2014 
+buildings , LRC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 165 - 1/15/2014 
+buildings , LRC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 166 - 1/17/2014 
+buildings , LRC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 167 - 1/21/2014 
+buildings , LRC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 168 - 1/23/2014 
+buildings , LRC-skipped,, VKC-skipped,
+ Total curtailment =  0 
+*****day 169 - 1/27/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 170 - 1/29/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 171 - 1/31/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 172 - 2/4/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 173 - 2/6/2014 
+buildings , LRC-skipped,, VKC-skipped,, WPH-skipped,
+ Total curtailment =  0 
+*****day 174 - 1/11/2014 
+buildings , VKC-skipped,
+ Total curtailment =  0 
+*****day 175 - 3/4/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 176 - 3/6/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 177 - 3/10/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 178 - 3/12/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 179 - 3/14/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 180 - 3/18/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
+*****day 181 - 3/20/2014 
+buildings , WPH-skipped,
+ Total curtailment =  0 
