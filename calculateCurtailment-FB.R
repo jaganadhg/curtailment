@@ -30,10 +30,15 @@ numDays = length(eventDays)
 missing = NULL # DR days skipped
 curtAll = NULL
 eventsAll = NULL
+
+dateArray = NULL
+buildingArray = NULL
+curtArray = NULL
+BLconsumptionArray = NULL
+
 for(i in 1:numDays){
-  #for(i in 1:5){
     
-  cat("i = ", i, "day =", as.character(eventDays[i]),"\n")
+  cat("i = ", i, "of", numDays,", day =", as.character(eventDays[i]),"\n")
   dataSlice = subset(DRdata, Date==eventDays[i])
   
   # read data for the event day
@@ -67,10 +72,14 @@ for(i in 1:numDays){
     kwhBL = kwh[beginDR-1]
     
     # calculate curtailment
+    curtArray = rbind(curtArray,c(kwhBL - kwhDR))
+    BLconsumptionArray = rbind(BLconsumptionArray,rep(kwhBL,16))
     curtailment = sum(kwhBL - kwhDR)
-    #cat(bldng, ":", strategy, ", curt =", curtailment, "\n")
     totalCurtailment = totalCurtailment + curtailment
-    #cat("total curt =", totalCurtailment, "\n")
+    
+    # also save building name and date
+    buildingArray = c(buildingArray, bldng)
+    dateArray = c(dateArray, eventDate)
     
   } # done for individual events
   
@@ -82,6 +91,28 @@ for(i in 1:numDays){
   eventsAll = rbind(eventsAll,as.character(eventDate))
   
 } # done for each DR event day
+#------------
+
+# frame 
+myDFi = data.frame(buildingArray,as.Date(dateArray))
+write.csv(myDFi,"file1-FB.csv",row.names=FALSE)
+
+# save individual buildings' curtailment
+write.csv(curtArray,"file2-FB.csv",row.names=FALSE)
+# save individual buildings' baseline consumption
+write.csv(BLconsumptionArray,"file3-FB.csv",row.names=FALSE)
+
+f1 = read.csv("file1-FB.csv")
+f2 = read.csv("file2-FB.csv")
+f3 = read.csv("file3-FB.csv")
+
+myDFx = data.frame(f1,f2)
+write.csv(myDFx,"curtailment-FB-intervalwise.csv",row.names=FALSE)
+
+myDFx = data.frame(f1,f3)
+write.csv(myDFx,"BLconsumption-FB-intervalwise.csv",row.names=FALSE)
+
+# frame and save curtailment summary
 myDF = data.frame(date = eventsAll,
                   curtailment = curtAll)
 write.csv(myDF,"curtailment-FB.csv")
