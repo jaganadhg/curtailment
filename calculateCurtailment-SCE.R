@@ -4,6 +4,8 @@
 # calculates total curtailment for each DR event
 # (uses SCE baseline)
 
+library(zoo)
+
 # DR event parameters
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
@@ -32,10 +34,15 @@ numDays = length(eventDays)
 missing = NULL # DR days skipped
 curtAll = NULL
 eventsAll = NULL
-for(i in 1:numDays){
-#  for(i in 1:5){
-    
-  cat("*****day", i,"-", as.character(eventDays[i]),"\n")
+
+dateArray = NULL
+buildingArray = NULL
+curtArray = NULL
+selectedBuildings = NULL
+
+# do for each event day
+for(i in 1:numDays){    
+  cat("*****day", i,"of", numDays,"-", as.character(eventDays[i]),"\n")
   dataSlice = subset(DRdata, Date==eventDays[i])
   eventDate = as.Date(dataSlice$Date[1],"%m/%d/%Y")
   
@@ -56,6 +63,7 @@ for(i in 1:numDays){
   totalCurtailment = 0
   numMissed = 0
   cat("buildings ")
+  numBuildingsSelected = dim(dataSlice)[1]
   for (j in 1:dim(dataSlice)[1]){
     bldng = as.character(dataSlice$Building[j])
     strategy = as.character(dataSlice$Strategy[j])
@@ -69,6 +77,7 @@ for(i in 1:numDays){
       missed = c(bldng,as.character(eventDate),strategy)
       missing = rbind(missing,missed) # save missed data info
       numMissed = numMissed + 1
+      numBuildingsSelected = numBuildingsSelected - 1
       cat("-skipped,")
       next   # skip for this building; move to next             
     } 
@@ -82,12 +91,16 @@ for(i in 1:numDays){
     kwhBL = kwhBL[2:17]
     
     # calculate curtailment
+    curtArray = rbind(curtArray,c(kwhBL - kwhDR))
     curtailment = sum(kwhBL - kwhDR)
-    #cat(bldng, ":", strategy, ", curt =", curtailment, "\n")
     totalCurtailment = totalCurtailment + curtailment
-    #cat("total curt =", totalCurtailment, "\n")
     
+    # also save building name and date
+    buildingArray = c(buildingArray, bldng)
+    dateArray = c(dateArray, eventDate)
   } # done for each building
+  
+  selectedBuildings = c(selectedBuildings,numBuildingsSelected)
   cat("\n Total curtailment = ", totalCurtailment, "\n")
   if(numMissed == dim(dataSlice)[1]){
     next    
@@ -99,8 +112,11 @@ for(i in 1:numDays){
 } # done for each DR event day
 #---------------
 
-# frame and save
-myDF = data.frame(date = eventsAll,
-                  curtailment = curtAll)
+# frame and save individual building curtailment
+myDFi = data.frame(buildingArray,as.Date(dateArray),curtArray)
+
+# frame and save curtailment summary
+myDF = data.frame(date = eventsAll, curtailment = curtAll)
+
 write.csv(myDF,"curtailment-SCE.csv")
 write.csv(missing,"missingDRdata-SCE.csv",row.names=FALSE)
