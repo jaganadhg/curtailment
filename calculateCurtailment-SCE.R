@@ -13,6 +13,8 @@ endDR = 69 # 5:00 PM
 # set FTP data
 username = ""
 pswd = ""
+username = "fmsguest"
+pswd = "gofms!"
 url = paste("ftp://",username,":",pswd,
             "@fmsdevwin.usc.edu/Files/Electrical_Dashboard/",
             sep="")
@@ -42,6 +44,7 @@ selectedBuildings = NULL
 
 # do for each event day
 for(i in 1:numDays){    
+#for(i in 1:4){     
   cat("*****day", i,"of", numDays,"-", as.character(eventDays[i]),"\n")
   dataSlice = subset(DRdata, Date==eventDays[i])
   eventDate = as.Date(dataSlice$Date[1],"%m/%d/%Y")
@@ -113,10 +116,19 @@ for(i in 1:numDays){
 #---------------
 
 # frame and save individual building curtailment
-myDFi = data.frame(buildingArray,as.Date(dateArray),curtArray)
+myDFi = data.frame(buildingArray,as.Date(dateArray))
+write.csv(myDFi,"file1.csv",row.names=FALSE)
+write.csv(curtArray,"file2.csv",row.names=FALSE)
+
+f1 = read.csv("file1.csv")
+f2 = read.csv("file2.csv")
+myDFx = data.frame(f1,f2)
+write.csv(myDFx,"curtailment-SCE-intervalwise.csv",row.names=FALSE)
 
 # frame and save curtailment summary
-myDF = data.frame(date = eventsAll, curtailment = curtAll)
-
+myDF = data.frame(date = eventsAll,
+                  curtailment = curtAll)
 write.csv(myDF,"curtailment-SCE.csv")
+
+#missing files
 write.csv(missing,"missingDRdata-SCE.csv",row.names=FALSE)
