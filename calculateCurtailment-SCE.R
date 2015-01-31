@@ -13,8 +13,6 @@ endDR = 69 # 5:00 PM
 # set FTP data
 username = ""
 pswd = ""
-username = "fmsguest"
-pswd = "gofms!"
 url = paste("ftp://",username,":",pswd,
             "@fmsdevwin.usc.edu/Files/Electrical_Dashboard/",
             sep="")
@@ -40,7 +38,7 @@ eventsAll = NULL
 dateArray = NULL
 buildingArray = NULL
 curtArray = NULL
-selectedBuildings = NULL
+BLconsumptionArray = NULL
 
 # do for each event day
 for(i in 1:numDays){    
@@ -95,6 +93,7 @@ for(i in 1:numDays){
     
     # calculate curtailment
     curtArray = rbind(curtArray,c(kwhBL - kwhDR))
+    BLconsumptionArray = rbind(BLconsumptionArray,rep(kwhBL,16))
     curtailment = sum(kwhBL - kwhDR)
     totalCurtailment = totalCurtailment + curtailment
     
@@ -103,7 +102,6 @@ for(i in 1:numDays){
     dateArray = c(dateArray, eventDate)
   } # done for each building
   
-  selectedBuildings = c(selectedBuildings,numBuildingsSelected)
   cat("\n Total curtailment = ", totalCurtailment, "\n")
   if(numMissed == dim(dataSlice)[1]){
     next    
@@ -115,15 +113,24 @@ for(i in 1:numDays){
 } # done for each DR event day
 #---------------
 
-# frame and save individual building curtailment
+# frame 
 myDFi = data.frame(buildingArray,as.Date(dateArray))
-write.csv(myDFi,"file1.csv",row.names=FALSE)
-write.csv(curtArray,"file2.csv",row.names=FALSE)
+write.csv(myDFi,"file1-SCE.csv",row.names=FALSE)
 
-f1 = read.csv("file1.csv")
-f2 = read.csv("file2.csv")
+# save individual buildings' curtailment
+write.csv(curtArray,"file2-SCE.csv",row.names=FALSE)
+# save individual buildings' baseline consumption
+write.csv(BLconsumptionArray,"file3-SCE.csv",row.names=FALSE)
+
+f1 = read.csv("file1-SCE.csv")
+f2 = read.csv("file2-SCE.csv")
+f3 = read.csv("file3-SCE.csv")
+
 myDFx = data.frame(f1,f2)
 write.csv(myDFx,"curtailment-SCE-intervalwise.csv",row.names=FALSE)
+
+myDFx = data.frame(f1,f3)
+write.csv(myDFx,"BLconsumption-SCE-intervalwise.csv",row.names=FALSE)
 
 # frame and save curtailment summary
 myDF = data.frame(date = eventsAll,
