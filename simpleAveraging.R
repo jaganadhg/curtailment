@@ -1,6 +1,7 @@
 # This script reads data from DR event days
 # Makes predictions for each DR day
 
+rm(list=ls())
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
@@ -19,7 +20,7 @@ buildings14 = as.character(unique(schedule14$Building))
 
 testBuildings = unique(c(buildings13,buildings14))
 allBuildings = unique(c(buildings12,buildings13,buildings14))
-numBuildings = length(buildings)
+numBuildings = length(allBuildings)
 
 # find DR vector file names
 bd = "BKS"
@@ -50,7 +51,9 @@ testIndices = c(indices13,indices14)
 numTestDays = length(testIndices)
 
 ######################## 
-
+mape = numeric(numTestDays)
+obsDayCount = numeric(numTestDays)
+  
 # make predictions
 for (i in 1:numTestDays){
   if(i == 1){
@@ -58,13 +61,14 @@ for (i in 1:numTestDays){
   }else{
     obsIndices = c(indices12,testIndices[1:i-1])  
   }
-  testIndex = i
-  testData = DRvectors[testIndex,(beginDR:endDR)]
-  obsData = DRvectors[obsIndices,(beginDR:endDR)]  
+  testIndex = testIndices[i]
+  testVector = DRvectors[testIndex,(beginDR:endDR)]
+  obsData = DRvectors[obsIndices,(beginDR:endDR)] 
+  predVector = apply(obsData,2,mean)
 
+  # calculate errors
+  ape = abs(predVector - testVector)/testVector
+  mape[i] = mean(ape)
+  
+  obsDayCount[i] = length(obsIndices)
 }
-
-
-# all12 = lapply(list12,function(i){
-#         read.csv(paste("2012/",i,sep=""))
-#       })
