@@ -1,6 +1,10 @@
 # This script reads data from DR event days
 # Makes predictions for each DR day
 
+beginDR = 54 # 1:15 PM
+endDR = 69 # 5:00 PM
+vectorLength = 199
+
 #read DR vectors
 setwd("/Users/saima/Desktop/curtailment/")
 
@@ -17,33 +21,50 @@ testBuildings = unique(c(buildings13,buildings14))
 allBuildings = unique(c(buildings12,buildings13,buildings14))
 numBuildings = length(buildings)
 
-# read DR vectors
+# find DR vector file names
 bd = "BKS"
 setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
 fList = list.files(pattern = paste("^",bd,sep=""))
-allFiles = lapply(fList,function(i){
-         read.csv(i)
-        })
+numDays = length(fList)
+
+# read DR vectors
+DRvectors = NULL
+skipped = NULL
+for (n in 1:numDays){
+  vector = read.csv(fList[n],header=TRUE,as.is=TRUE)  
+  vector = vector[,1]
+  if(length(vector) != vectorLength){
+    skipped = c(skipped,n)
+    next  # skip this record
+  }
+  DRvectors = rbind(DRvectors,vector)
+}
+# update numdays
+fList = fList[-skipped]
+numDays = length(fList)
+
+indices12 = grep("2012",fList)
+indices13 = grep("2013",fList)
+indices14 = grep("2014",fList)
+testIndices = c(indices13,indices14)
+numTestDays = length(testIndices)
+
+######################## 
+
+# make predictions
+for (i in 1:numTestDays){
+  if(i == 1){
+    obsIndices = indices12
+  }else{
+    obsIndices = c(indices12,testIndices[1:i-1])  
+  }
+  testIndex = i
+  testData = DRvectors[testIndex,(beginDR:endDR)]
+  obsData = DRvectors[obsIndices,(beginDR:endDR)]  
+
+}
 
 
-
-# list13 = list.files("2013/")
-# list14 = list.files("2014/")
-# 
 # all12 = lapply(list12,function(i){
 #         read.csv(paste("2012/",i,sep=""))
 #       })
-# all13 = lapply(list13,function(i){
-#   read.csv(paste("2013/",i,sep=""))
-# })
-# all14 = lapply(list14,function(i){
-#   read.csv(paste("2014/",i,sep=""))
-# })
-# 
-# 
-# # read temperature data
-# setwd("/Users/saima/Desktop/Energy Experiments/gcode/weather")
-# t12 = read.csv("tmp-2012.csv")
-# t13 = read.csv("tmp-2013.csv")
-# t14 = read.csv("tmp-2014.csv")
-# 
