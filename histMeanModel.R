@@ -54,12 +54,11 @@ for (j in 1:numBuildings){
   # update numdays
   fList = fList[-skipped]
   numDays = length(fList)
+  numObsDays = round((2/3)*numDays)
+  numTestDays = numDays - numObsDays
   
-  indices12 = grep("2012",fList)
-  indices13 = grep("2013",fList)
-  indices14 = grep("2014",fList)
-  testIndices = c(indices13,indices14)
-  numTestDays = length(testIndices)
+  obsIndices = c(1:numObsDays)
+  testIndices = c(numObsDays+1:numTestDays)
   
   ######################## 
   mape = numeric(numTestDays)
@@ -67,15 +66,6 @@ for (j in 1:numBuildings){
   
   # make predictions
   for (i in 1:numTestDays){
-    if(i == 1){
-      if(length(indices12) == 0){
-        absent2012 = TRUE
-        next
-      }
-      obsIndices = indices12
-    }else{
-        obsIndices = c(indices12,testIndices[1:i-1])  
-    }
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,(beginDR:endDR)]
     obsData = DRvectors[obsIndices,(beginDR:endDR)] 
@@ -94,15 +84,10 @@ for (j in 1:numBuildings){
     obsDayCount[i] = length(obsIndices)
     allDayCounts[[j]] = obsDayCount
   } 
-  #remove first unused entry for day 1
-  if(absent2012 == TRUE){
-    allMape[[j]] = allMape[[j]][-1]
-    allDayCounts[[j]] = allDayCounts[[j]][-1]
-  }
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/")
+setwd("/Users/saima/Desktop/curtailment/MAPE/mape-histmean/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
