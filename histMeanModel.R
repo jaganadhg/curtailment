@@ -1,10 +1,11 @@
-# This script reads data from DR event days
-# Makes predictions for each DR day
+# This script makes predictions for each DR day
+# based on historical mean of ALL previous DR days for that building
 
 rm(list=ls())
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
+absent2012 = FALSE
 
 #read DR vectors
 setwd("/Users/saima/Desktop/curtailment/")
@@ -26,9 +27,10 @@ numBuildings = length(allBuildings)
 allMape = list()
 allDayCounts = list()
 setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
+
 for (j in 1:numBuildings){
-#for (j in 1:15){
   bd = allBuildings[j]
+
   # find DR vector file names
   fList = list.files(pattern = paste("^",bd,sep=""))
   if(length(fList)==0){
@@ -106,7 +108,7 @@ for(i in 1:length(allMape)){
   }
   df = data.frame(mape = allMape[[i]],
                   daycounts = allDayCounts[[i]])
-  opFile = paste("mape-simpleAvg-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-histmean-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
