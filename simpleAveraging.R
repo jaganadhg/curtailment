@@ -26,11 +26,14 @@ numBuildings = length(allBuildings)
 allMape = list()
 allDayCounts = list()
 setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
-#for (j in 1:numBuildings){
-for (j in 1:8){
+for (j in 1:numBuildings){
+#for (j in 1:15){
   bd = allBuildings[j]
   # find DR vector file names
   fList = list.files(pattern = paste("^",bd,sep=""))
+  if(length(fList)==0){
+    next
+  }
   numDays = length(fList)
   
   # read DR vectors
@@ -60,13 +63,12 @@ for (j in 1:8){
   obsDayCount = numeric(numTestDays)
   
   # make predictions
-  for (i in 2:numTestDays){
+  for (i in 1:numTestDays){
     if(i == 1){
       if(length(indices12) == 0){
-        mape = numeric(numTestDays-1)
-        obsDayCount = numeric(numTestDays-1)
-        next  
-      } 
+        absent2012 = TRUE
+        next
+      }
       obsIndices = indices12
     }else{
         obsIndices = c(indices12,testIndices[1:i-1])  
@@ -88,5 +90,11 @@ for (j in 1:8){
     
     obsDayCount[i] = length(obsIndices)
     allDayCounts[[j]] = obsDayCount
-  }  
+  } 
+  #remove first unused entry for day 1
+  if(absent2012 == TRUE){
+    allMape[[j]] = allMape[[j]][-1]
+    allDayCounts[[j]] = allDayCounts[[j]][-1]
+  }
 }
+
