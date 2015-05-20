@@ -1,5 +1,5 @@
 # This script makes predictions for each DR day
-# based on historical mean of DR days in the training data for that building
+# based on eigen PCA model
 # Traindata is 2/3 of the entire data.
 
 rm(list=ls())
@@ -54,11 +54,11 @@ for (j in 1:numBuildings){
   # update numdays
   fList = fList[-skipped]
   numDays = length(fList)
-  numObsDays = round((2/3)*numDays)
-  numTestDays = numDays - numObsDays
+  numTrainDays = round((2/3)*numDays)
+  numTestDays = numDays - numTrainDays
   
-  obsIndices = c(1:numObsDays)
-  testIndices = c((numObsDays+1):numDays)
+  trainIndices = c(1:numTrainDays)
+  testIndices = c((numTrainDays+1):numDays)
   
   ######################## 
   mape = numeric(numTestDays)
@@ -68,20 +68,24 @@ for (j in 1:numBuildings){
   for (i in 1:numTestDays){
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,(beginDR:endDR)]
-    obsData = DRvectors[obsIndices,(beginDR:endDR)] 
     
-    if(is.null(dim(obsData))){ # observed data for just 1 day
-      predVector = obsData
+    #--------------------------
+    preDRsignature = DRvectors[trainIndices,
+                               c(1:(beginDR-1),(96+1):(96+beginDR-1))] 
+    
+    if(is.null(dim(trainData))){ # observed data for just 1 day
+      predVector = trainData
     }else{
-      predVector = apply(obsData,2,mean)  
+      predVector = apply(trainData,2,mean)  
     }
     
+    #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
     mape[i] = mean(ape)
     allMape[[j]] = mape
     
-    obsDayCount[i] = length(obsIndices)
+    obsDayCount[i] = length(trainIndices)
     allDayCounts[[j]] = obsDayCount
   } 
 }
