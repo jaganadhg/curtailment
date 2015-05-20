@@ -22,53 +22,71 @@ testBuildings = unique(c(buildings13,buildings14))
 allBuildings = unique(c(buildings12,buildings13,buildings14))
 numBuildings = length(allBuildings)
 
-# find DR vector file names
-bd = "BKS"
+# do for all buildings
+allMape = list()
+allDayCounts = list()
 setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
-fList = list.files(pattern = paste("^",bd,sep=""))
-numDays = length(fList)
-
-# read DR vectors
-DRvectors = NULL
-skipped = NULL
-for (n in 1:numDays){
-  vector = read.csv(fList[n],header=TRUE,as.is=TRUE)  
-  vector = vector[,1]
-  if(length(vector) != vectorLength){
-    skipped = c(skipped,n)
-    next  # skip this record
-  }
-  DRvectors = rbind(DRvectors,vector)
-}
-# update numdays
-fList = fList[-skipped]
-numDays = length(fList)
-
-indices12 = grep("2012",fList)
-indices13 = grep("2013",fList)
-indices14 = grep("2014",fList)
-testIndices = c(indices13,indices14)
-numTestDays = length(testIndices)
-
-######################## 
-mape = numeric(numTestDays)
-obsDayCount = numeric(numTestDays)
+#for (j in 1:numBuildings){
+for (j in 1:8){
+  bd = allBuildings[j]
+  # find DR vector file names
+  fList = list.files(pattern = paste("^",bd,sep=""))
+  numDays = length(fList)
   
-# make predictions
-for (i in 1:numTestDays){
-  if(i == 1){
-    obsIndices = indices12
-  }else{
-    obsIndices = c(indices12,testIndices[1:i-1])  
+  # read DR vectors
+  DRvectors = NULL
+  skipped = NULL
+  for (n in 1:numDays){
+    vector = read.csv(fList[n],header=TRUE,as.is=TRUE)  
+    vector = vector[,1]
+    if(length(vector) != vectorLength){
+      skipped = c(skipped,n)
+      next  # skip this record
+    }
+    DRvectors = rbind(DRvectors,vector)
   }
-  testIndex = testIndices[i]
-  testVector = DRvectors[testIndex,(beginDR:endDR)]
-  obsData = DRvectors[obsIndices,(beginDR:endDR)] 
-  predVector = apply(obsData,2,mean)
-
-  # calculate errors
-  ape = abs(predVector - testVector)/testVector
-  mape[i] = mean(ape)
+  # update numdays
+  fList = fList[-skipped]
+  numDays = length(fList)
   
-  obsDayCount[i] = length(obsIndices)
+  indices12 = grep("2012",fList)
+  indices13 = grep("2013",fList)
+  indices14 = grep("2014",fList)
+  testIndices = c(indices13,indices14)
+  numTestDays = length(testIndices)
+  
+  ######################## 
+  mape = numeric(numTestDays)
+  obsDayCount = numeric(numTestDays)
+  
+  # make predictions
+  for (i in 2:numTestDays){
+    if(i == 1){
+      if(length(indices12) == 0){
+        mape = numeric(numTestDays-1)
+        obsDayCount = numeric(numTestDays-1)
+        next  
+      } 
+      obsIndices = indices12
+    }else{
+        obsIndices = c(indices12,testIndices[1:i-1])  
+    }
+    testIndex = testIndices[i]
+    testVector = DRvectors[testIndex,(beginDR:endDR)]
+    obsData = DRvectors[obsIndices,(beginDR:endDR)] 
+    
+    if(is.null(dim(obsData))){ # observed data for just 1 day
+      predVector = obsData
+    }else{
+      predVector = apply(obsData,2,mean)  
+    }
+    
+    # calculate errors
+    ape = abs(predVector - testVector)/testVector
+    mape[i] = mean(ape)
+    allMape[[j]] = mape
+    
+    obsDayCount[i] = length(obsIndices)
+    allDayCounts[[j]] = obsDayCount
+  }  
 }
