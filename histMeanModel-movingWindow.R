@@ -101,14 +101,14 @@ for (j in 1:numBuildings){
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/")
+setwd("/Users/saima/Desktop/curtailment/MAPE/mape-histmean-movingwindow/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
   df = data.frame(mape = allMape[[i]],
                   daycounts = allDayCounts[[i]])
-  opFile = paste("mape-histmean-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-histmean-movingwindow-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 

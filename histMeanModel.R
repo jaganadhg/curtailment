@@ -1,5 +1,6 @@
 # This script makes predictions for each DR day
 # based on historical mean of ALL previous DR days for that building
+# Traindata is 2/3 of the entire data.
 
 rm(list=ls())
 beginDR = 54 # 1:15 PM
