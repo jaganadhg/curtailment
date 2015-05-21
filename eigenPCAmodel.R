@@ -93,14 +93,13 @@ for (j in 1:numBuildings){
     # No. of observed features in preDR signature are
     # kwh & temp before DR, and 5 weekdays
     preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
-    numPreDRFeatures = length(preDRindices) 
     preDRsignature = DRvectors[testIndex,preDRindices] 
     preDRev = eigenVectorsTrainData[preDRindices,(1:TOP)]
     preDRmu = mu[preDRindices]
     preDRsigma = sigma[preDRindices]
     
     # calculate weights
-    weights = (preDRsignature - preDRmu) %*% 
+    weights = t(matrix(preDRsignature - preDRmu)) %*% 
                 diag(preDRsigma^(-1)) %*%
                   preDRev
     
