@@ -24,6 +24,7 @@ testBuildings = unique(c(buildings13,buildings14))
 allBuildings = unique(c(buildings12,buildings13,buildings14))
 numBuildings = length(allBuildings)
 
+#-------------------------------
 # do for all buildings
 allMape = list()
 allDayCounts = list()
@@ -70,8 +71,24 @@ for (j in 1:numBuildings){
     testVector = DRvectors[testIndex,(beginDR:endDR)]
     
     #--------------------------
-    preDRsignature = DRvectors[trainIndices,
-                               c(1:(beginDR-1),(96+1):(96+beginDR-1))] 
+    # define training data
+    wkend = c(198,199)
+    trainData = DRvectors[trainIndices,-wkend]
+    
+    # normalize kwh and temp columns
+    mu = apply(trainData,2,mean)
+    sigma = apply(trainData,2,sd)
+    normTrainData = scale(trainData,center = TRUE, scale = TRUE)
+    
+    # find eigen vectors
+    covTrainData = cov(normTrainData)
+    eigenValuesTrainData = eigen(covTrainData)$values
+    eigenVectorsTrainData = eigen(covTrainData)$vectors
+    
+    #save eigen vectors
+    evFile = paste("../../EigenVectors/",bd,"-ev.csv",sep="")
+    write.csv(eigenVectorsTrainData,evFile,row.names=F)
+    
     
     if(is.null(dim(trainData))){ # observed data for just 1 day
       predVector = trainData
