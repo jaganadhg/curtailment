@@ -7,6 +7,7 @@ beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
 absent2012 = FALSE
+TOP = 10
 
 #read DR vectors
 setwd("/Users/saima/Desktop/curtailment/")
@@ -85,17 +86,27 @@ for (j in 1:numBuildings){
     eigenValuesTrainData = eigen(covTrainData)$values
     eigenVectorsTrainData = eigen(covTrainData)$vectors
     
-    #save eigen vectors
+    # save eigen vectors
     evFile = paste("../../EigenVectors/",bd,"-ev.csv",sep="")
     write.csv(eigenVectorsTrainData,evFile,row.names=F)
     
+    # No. of observed features in preDR signature are
+    # kwh & temp before DR, and 5 weekdays
+    preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
+    numPreDRFeatures = length(preDRindices) 
+    preDRsignature = DRvectors[testIndex,preDRindices] 
+    preDRev = eigenVectorsTrainData[preDRindices,(1:TOP)]
+    preDRmu = mu[preDRindices]
+    preDRsigma = sigma[preDRindices]
     
-    if(is.null(dim(trainData))){ # observed data for just 1 day
-      predVector = trainData
-    }else{
-      predVector = apply(trainData,2,mean)  
-    }
+    # calculate weights
+    weights = (preDRsignature - preDRmu) %*% 
+                diag(preDRsigma^(-1)) %*%
+                  preDRev
     
+    # make predictions
+    preds = (sum(weights*preDRev]) + mu)*diag(sigma)
+
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
