@@ -105,7 +105,11 @@ for (j in 1:numBuildings){
                   preDRev
     
     # make predictions
-    preds = (sum(weights*preDRev]) + mu)*diag(sigma)
+    sumev = 0
+    for (k in 1:length(weights)){
+      sumev = sumev + weights[i]*eigenVectorsTrainData[,i]
+    }
+    preds = ((sumev + mu) %*% diag(sigma))[beginDR:endDR]
 
     #--------------------------
     # calculate errors
