@@ -75,18 +75,8 @@ for (j in 1:numBuildings){
     wkend = c(198,199)
     trainData = DRvectors[trainIndices,-wkend]
     
-    # find eigen vectors
-    covTrainData = cov(trainData)
-    eigenValuesTrainData = eigen(covTrainData)$values
-    eigenVectorsTrainData = eigen(covTrainData)$vectors
-    
-    # save eigen vectors
-    evFile = paste("../../EigenVectors/",bd,"-ev.csv",sep="")
-    write.csv(eigenVectorsTrainData,evFile,row.names=F)
-    
     # No. of observed features in preDR signature are
     # kwh & temp before DR, and 5 weekdays
-    TOP = 10
     preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
     preDRsignature = DRvectors[testIndex,preDRindices]
     preDRev = eigenVectorsTrainData[preDRindices,(1:TOP)]

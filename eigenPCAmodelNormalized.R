@@ -7,7 +7,6 @@ beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
 absent2012 = FALSE
-TOP = 2
 
 #read DR vectors
 setwd("/Users/saima/Desktop/curtailment/")
