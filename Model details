@@ -1,0 +1,6 @@
+Models tested
+1- histMeanModel-movingWindow: training data increased with a moving window
+2- histMeanModel: training data 2/3 of all data
+3- eigenPCAModel:
+4- eigenPCANormalizedModel: all eigenvectors are normalized
+5- WDmodel: 
