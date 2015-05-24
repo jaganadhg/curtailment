@@ -8,6 +8,11 @@ endDR = 69 # 5:00 PM
 vectorLength = 199
 absent2012 = FALSE
 
+# No. of observed features in preDR signature are
+# kwh & temp before DR, and 5 weekdays
+preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
+inDRindices = c(beginDR:endDR)
+
 #read DR vectors
 setwd("/Users/saima/Desktop/curtailment/")
 
@@ -68,25 +73,20 @@ for (j in 1:numBuildings){
   # make predictions
   for (i in 1:numTestDays){
     testIndex = testIndices[i]
-    testVector = DRvectors[testIndex,(beginDR:endDR)]
+    testVector = DRvectors[testIndex,inDRindices]
     
     #--------------------------
     # define training data
-    wkend = c(198,199)
-    trainData = DRvectors[trainIndices,-wkend]
-    
-    # No. of observed features in preDR signature are
-    # kwh & temp before DR, and 5 weekdays
-    preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
-    preDRsignature = DRvectors[testIndex,preDRindices]
-    preDRev = eigenVectorsTrainData[preDRindices,(1:TOP)]
+    #wkend = c(198,199)
+    #trainData = DRvectors[trainIndices,-wkend]
+    preDRsignatureTest = DRvectors[testIndex,preDRindices]
+    preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
     
     # calculate weights
-    weights = preDRsignature %*% preDRev
+    weights = preDRsignatureTest %*% ginv(preDRsignatureTest)
     
-    # make predictions
-    inDRindices = c(beginDR:endDR)
-    inDRev = eigenVectorsTrainData[inDRindices,(1:TOP)]
+    # make predictions    
+    inDRTrain = DRvectors[inDRindices,(1:TOP)]
     
     sumev = 0
     for (k in 1:length(weights)){
