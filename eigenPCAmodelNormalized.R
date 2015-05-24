@@ -75,34 +75,42 @@ for (j in 1:numBuildings){
     wkend = c(198,199)
     trainData = DRvectors[trainIndices,-wkend]
     
+    # normalize kwh and temp columns
+    normTrainData = scale(trainData,center = TRUE,scale = TRUE)
+    
     # find eigen vectors
-    covTrainData = cov(trainData)
+    covTrainData = cov(normTrainData)
     eigenValuesTrainData = eigen(covTrainData)$values
     eigenVectorsTrainData = eigen(covTrainData)$vectors
     
     # save eigen vectors
-    evFile = paste("../../EigenVectors/",bd,"-ev.csv",sep="")
+    evFile = paste("../../NormEigenVectors/",bd,"-ev.csv",sep="")
     write.csv(eigenVectorsTrainData,evFile,row.names=F)
     
     # No. of observed features in preDR signature are
     # kwh & temp before DR, and 5 weekdays
-    TOP = 10
+    TOP = 2
     preDRindices = c(1:(beginDR-1),(96+1):(96+beginDR-1),(192+1):197)
     preDRsignature = DRvectors[testIndex,preDRindices]
     preDRev = eigenVectorsTrainData[preDRindices,(1:TOP)]
+    preDRmu = mu[preDRindices]
+    preDRsigma = sigma[preDRindices]
     
     # calculate weights
-    weights = preDRsignature %*% preDRev
+    normSignature = (preDRsignature-preDRmu)%*%diag(preDRsigma^(-1))
+    weights = normSignature %*% preDRev
     
     # make predictions
     inDRindices = c(beginDR:endDR)
     inDRev = eigenVectorsTrainData[inDRindices,(1:TOP)]
+    inDRmu = mu[inDRindices]
+    inDRsigma = sigma[inDRindices]
     
     sumev = 0
     for (k in 1:length(weights)){
       sumev = sumev + weights[k]*inDRev[,k]
     }
-    preds = sumev
+    preds = ((sumev + inDRmu) %*% diag(inDRsigma))
 
     #--------------------------
     # calculate errors
