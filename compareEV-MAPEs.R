@@ -1,10 +1,11 @@
 # compare and plot mapes with different # of EVs
 
-numEVs = 50
+rm(list=ls())
+numEVs = 49
 setwd("/Users/saima/Desktop/curtailment/MAPE/mape-evs/")
 
 mapeEV = NULL
-for (j in 1:nuMEVs){  
+for (j in 1:numEVs){  
   files = list.files(pattern=paste("^",j,"ev",sep=""))
   numFiles = length(files)
   
@@ -22,10 +23,9 @@ for (j in 1:nuMEVs){
   mapeEV = cbind(mapeEV,avgError)
 }
 
-
 # save results 
-df = data.frame(building = substr(files,15,17),
+df = data.frame(building = substr(files,11,13),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
                 mapeEV = mapeEV)
-write.csv(df,"../avg-ev-mapes.csv")
+write.csv(df,"../avg-ev-mapes.csv",row.names=F)
