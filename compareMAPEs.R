@@ -20,5 +20,5 @@ for (i in 1:numFiles){
 df = data.frame(building = substr(files,15,17),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
-                mape-histmean = avgError)
+                mapeHistmean = avgError)
 write.csv(df,"../avg-mapes.csv")
