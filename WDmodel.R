@@ -3,6 +3,7 @@
 # Traindata is 2/3 of the entire data.
 
 rm(list=ls())
+library(MASS)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
@@ -83,16 +84,11 @@ for (j in 1:numBuildings){
     preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
     
     # calculate weights
-    weights = preDRsignatureTest %*% ginv(preDRsignatureTest)
+    weights = preDRsignatureTest %*% ginv(preDRsignatureTrain)
     
     # make predictions    
-    inDRTrain = DRvectors[inDRindices,(1:TOP)]
-    
-    sumev = 0
-    for (k in 1:length(weights)){
-      sumev = sumev + weights[k]*inDRev[,k]
-    }
-    preds = sumev
+    inDRtrain = DRvectors[trainIndices,inDRindices]
+    predVector = weights %*% inDRtrain
 
     #--------------------------
     # calculate errors
