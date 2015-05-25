@@ -3,15 +3,15 @@
 rm(list=ls())
 
 setwd("/Users/saima/Desktop/curtailment/MAPE/mape-histmean/")
-files = list.files(pattern="*.csv")
-numFiles = length(files)
+filesHM = list.files(pattern="*.csv")
+numFiles = length(filesHM)
 numTestDays = numeric(numFiles)
 numTrainDays = numeric(numFiles)
 
 # find avg histmean mape for all files
 avgError = numeric(numFiles)
 for (i in 1:numFiles){
-  errors = read.csv(files[i])
+  errors = read.csv(filesHM[i])
   avgError[i] = mean(errors$mape)
   numTestDays[i] = dim(errors)[1]
   numTrainDays[i] = errors$daycounts[1]
@@ -19,19 +19,19 @@ for (i in 1:numFiles){
 
 # find avg wd mape for all files
 setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wd/")
-files = list.files(pattern="*.csv")
-numFiles = length(files)
+filesWD = list.files(pattern="*.csv")
+numFiles = length(filesWD)
 
 avgWDerror = numeric(numFiles)
 for (i in 1:numFiles){
-  errors = read.csv(files[i])
+  errors = read.csv(filesWD[i])
   avgWDerror[i] = mean(errors$mape)
 }
 
 # save results 
-df = data.frame(building = substr(files,15,17),
+df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
                 mapeHistmean = avgError,
                 mapeWD = avgWDerror)
-write.csv(df,"../avg-mapes.csv")
+write.csv(df,"../avg-mapes.csv",row.names=F)
