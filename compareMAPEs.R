@@ -39,11 +39,23 @@ for (i in 1:numFiles){
   avgWMerror[i] = mean(errors$mape)
 }
 
+# 4. find avg ws mape for all files
+setwd("/Users/saima/Desktop/curtailment/MAPE/mape-ws/")
+filesWS = list.files(pattern="*.csv")
+numFiles = length(filesWS)
+
+avgWSerror = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesWS[i])
+  avgWSerror[i] = mean(errors$mape)
+}
+
 # save results 
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
                 mapeHistmean = avgError,
                 mapeWD = avgWDerror,
-                mapeWM = avgWMerror)
+                mapeWM = avgWMerror,
+                mapeWS = avgWSerror)
 write.csv(df,"../avg-mapes.csv",row.names=F)

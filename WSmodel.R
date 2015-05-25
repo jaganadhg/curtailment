@@ -1,9 +1,8 @@
 # This script makes predictions for each DR day
-# based on WM model
+# based on WS model - weighted similarity
 # morning factor: 4 hrs before DR 
 # Traindata is 2/3 of the entire data.
 
-rm(list=ls())
 library(MASS)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
@@ -78,18 +77,40 @@ for (j in 1:numBuildings){
   for (i in 1:numTestDays){
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,inDRindices]
-    
+    trainData = DRvectors[trainIndices,inDRindices]
     #--------------------------
-    # define training data
+    # define preDR data
     preDRsignatureTest = DRvectors[testIndex,preDRindices]
     preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
     
-    # calculate weights
-    weights = preDRsignatureTest %*% ginv(preDRsignatureTrain)
+    # calculate similarity of preDRsignature of test day with
+    # preDR signature of all train days
+    x = rbind(preDRsignatureTest,preDRsignatureTrain)
+    d = as.matrix(dist(x))
+    d = d[1,2:dim(d)[1]]
+    sortedIndices = sort(d,index.return=TRUE)$ix
     
+    # calculate weights
+    neighbors = length(sortedIndices)
+    x = seq(0,4,length=neighbors)
+    weights = dexp(x,rate=1)
+    sa = sum(weights)
+    weights = weights/sa
+    
+    # define neighborhood
+    neighborhood = numeric(16)
+    if(neighbors == 1){
+      neighborhood = neighborhood + 
+                      weights * trainData
+    }else{
+      for (l in 1:neighbors){
+        neighborhood = neighborhood + 
+                      weights[l] * trainData[sortedIndices[l],]
+      }  
+    }
+
     # make predictions    
-    inDRtrain = DRvectors[trainIndices,inDRindices]
-    predVector = weights %*% inDRtrain
+    predVector = neighborhood # No morning adjustment
 
     #--------------------------
     # calculate errors
@@ -103,14 +124,14 @@ for (j in 1:numBuildings){
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wm/")
+setwd("/Users/saima/Desktop/curtailment/MAPE/mape-ws/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
   df = data.frame(mape = allMape[[i]],
                   daycounts = allDayCounts[[i]])
-  opFile = paste("mape-wm-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-ws-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
