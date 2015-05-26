@@ -80,4 +80,11 @@ df = data.frame(building = substr(filesWD,9,11),
                 mapeWS = avgWSerror,
                 mapeKNN = avgKNNerror,
                 mapeKNNglobal = avgKNNgError)
+
+# add a row of avg error values
+df$building = as.character(df$building)
+df[36,] = c("Avg Error",sum(numTestDays),sum(numTrainDays),
+            mean(avgError),mean(avgWDerror),mean(avgWMerror),
+            mean(avgWSerror),mean(avgKNNerror),mean(avgKNNgError))
+
 write.csv(df,"../avg-mapes.csv",row.names=F)
