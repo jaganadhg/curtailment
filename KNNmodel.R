@@ -3,6 +3,7 @@
 # Traindata is 2/3 of the entire data.
 
 library(MASS)
+library(NbClust)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
@@ -70,8 +71,22 @@ for (j in 1:numBuildings){
   
   trainData = DRvectors[trainIndices,]
   #cluster training Days
-  clusters = kmeans(trainData, 3)
-  
+  if(length(trainIndices)<=3){
+    numClusters = 1
+  }else{
+    if(length(trainIndices)<=6){
+      mx = length(trainIndices) - 1
+    }else{
+      mx = 5 
+    }
+    c = NbClust(trainData, distance = "euclidean", 
+                min.nc = 2, max.nc = 2,
+                method = "complete", index = "ch")
+    numClusters = c$Best.nc[1]  
+  }  
+  clusters = kmeans(trainData, numClusters)
+  dailyProfile = clusters$centers
+    
   ######################## 
   mape = numeric(numTestDays)
   obsDayCount = numeric(numTestDays)
@@ -83,36 +98,25 @@ for (j in 1:numBuildings){
     #--------------------------
     # define preDR data
     preDRsignatureTest = DRvectors[testIndex,preDRindices]
-    preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
-    
-    # calculate similarity of preDRsignature of test day with
-    # preDR signature of all train days
-    x = rbind(preDRsignatureTest,preDRsignatureTrain)
+        
+    # calculate distance of preDRsignature of test day
+    # with all daily Profiles
+    x = rbind(preDRsignatureTest,dailyProfile[,preDRindices])
     d = as.matrix(dist(x))
     d = d[1,2:dim(d)[1]]
+    # sort from shortest distance to largest
     sortedIndices = sort(d,index.return=TRUE)$ix
     
-    # calculate weights
-    neighbors = length(sortedIndices)
-    x = seq(0,4,length=neighbors)
-    weights = dexp(x,rate=1)
-    sa = sum(weights)
-    weights = weights/sa
+    # find probability for a given day belonging to a cluster
+    prob = 1/d
+    prob = prob/sum(prob) #normalize
     
-    # define neighborhood
-    neighborhood = numeric(16)
-    if(neighbors == 1){
-      neighborhood = neighborhood + 
-                      weights * trainData
-    }else{
-      for (l in 1:neighbors){
-        neighborhood = neighborhood + 
-                      weights[l] * trainData[sortedIndices[l],]
-      }  
+    # make predictions
+    predVector = numeric(length(inDRindices))
+    for(k in 1:numClusters){
+      predVector = predVector +
+          dailyProfile[k,inDRindices] * prob[k]
     }
-
-    # make predictions    
-    predVector = neighborhood # No morning adjustment
 
     #--------------------------
     # calculate errors
