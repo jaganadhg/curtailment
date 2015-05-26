@@ -1,6 +1,17 @@
 Models tested
 1- histMeanModel-movingWindow: training data increased with a moving window
-2- histMeanModel: training data 2/3 of all data
+*2- histMeanModel: training data 2/3 of all data
+
 3- eigenPCAModel:
-4- eigenPCANormalizedModel: all eigenvectors are normalized
-5- WDmodel: 
+*4- eigenPCANormalizedModel: all eigenvectors are normalized
+
+*5- WDmodel: <weighted day model>
+		PreDR vector on testday = sum(weights * preDR vectors of training days)
+		inDR vector on testday = sum(weights * inDR vectors of training days)
+
+*6- WSmodel: <weighted similarity model>
+			find similarity between preDR morning vectors 
+			similar vectors get higher weight; weights decrease exponentially
+			inDR vector on testday = sum(weights * inDR vectors of training days)
+
+*7 - kNNmodel: all vectors in the training data are clustered into daily 					profiles. Calculate prob of a vector belonging to a cluster as inverse of distance between preDR vector on test day and preDR vectors of cluster centroids. These probs are used as weights.
