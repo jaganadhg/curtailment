@@ -50,6 +50,17 @@ for (i in 1:numFiles){
   avgWSerror[i] = mean(errors$mape)
 }
 
+# 5. find avg knn mape for all files
+setwd("/Users/saima/Desktop/curtailment/MAPE/mape-knn/")
+filesKNN = list.files(pattern="*.csv")
+numFiles = length(filesKNN)
+
+avgKNNerror = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesKNN[i])
+  avgKNNerror[i] = mean(errors$mape)
+}
+
 # save results 
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
@@ -57,5 +68,6 @@ df = data.frame(building = substr(filesWD,9,11),
                 mapeHistmean = avgError,
                 mapeWD = avgWDerror,
                 mapeWM = avgWMerror,
-                mapeWS = avgWSerror)
+                mapeWS = avgWSerror,
+                mapeKNN = avgKNNerror)
 write.csv(df,"../avg-mapes.csv",row.names=F)
