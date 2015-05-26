@@ -81,8 +81,11 @@ df = data.frame(building = substr(filesWD,9,11),
                 mapeKNN = avgKNNerror,
                 mapeKNNglobal = avgKNNgError)
 
+# leave out spurious data buildings
+df = df[-c(16, 24, 25),] #SCC, SCB, LRC
 # add a row of avg error values
 df$building = as.character(df$building)
+rowx = dim(df)[1]
 df[36,] = c("Avg Error",sum(numTestDays),sum(numTrainDays),
             mean(avgError),mean(avgWDerror),mean(avgWMerror),
             mean(avgWSerror),mean(avgKNNerror),mean(avgKNNgError))
