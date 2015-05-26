@@ -75,8 +75,9 @@ for (j in 1:numBuildings){
 c = NbClust(globalTrainData, distance = "euclidean", 
               min.nc = 2, max.nc = 20,
               method = "complete", index = "ch")
-numClusters = c$Best.nc[1]  
-clusters = kmeans(globalTrainData, numClusters)
+numClusters = c$Best.nc[1]
+
+clusters = kmeans(globalTrainData, 10)
 dailyProfile = clusters$centers  
 
 #-------------------------------

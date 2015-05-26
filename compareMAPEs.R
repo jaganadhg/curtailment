@@ -1,7 +1,5 @@
 # compare and plot mapes from different models
 
-rm(list=ls())
-
 setwd("/Users/saima/Desktop/curtailment/MAPE/mape-histmean/")
 filesHM = list.files(pattern="*.csv")
 numFiles = length(filesHM)
