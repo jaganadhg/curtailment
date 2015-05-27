@@ -74,20 +74,20 @@ for (i in 1:numFiles){
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
-                mapeHistmean = avgError,
-                mapeWD = avgWDerror,
-                mapeWM = avgWMerror,
-                mapeWS = avgWSerror,
-                mapeKNN = avgKNNerror,
-                mapeKNNglobal = avgKNNgError)
+                Histmean = avgError,
+                WD = avgWDerror,
+                WM = avgWMerror,
+                WS = avgWSerror,
+                KNN = avgKNNerror,
+                KNNglobal = avgKNNgError)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
 # add a row of avg error values
 df$building = as.character(df$building)
 rowx = dim(df)[1]
-df[rowx+1,] = c("Avg Error",sum(numTestDays),sum(numTrainDays),
-            mean(avgError),mean(avgWDerror),mean(avgWMerror),
-            mean(avgWSerror),mean(avgKNNerror),mean(avgKNNgError))
+df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
+            mean(df$Histmean),mean(df$WD),mean(df$WM),
+            mean(df$WS),mean(df$KNN),mean(df$KNNglobal))
 
 write.csv(df,"../avg-mapes.csv",row.names=F)

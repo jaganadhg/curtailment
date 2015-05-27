@@ -8,6 +8,7 @@ beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
 absent2012 = FALSE
+spr = c(16, 24, 25)
 
 # No. of observed features in preDR signature are
 # kwh & temp before DR, and 5 weekdays
@@ -37,6 +38,9 @@ numBuildings = length(allBuildings)
 setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
 globalTrainData = NULL
 for (j in 1:numBuildings){
+  if(j %in% spr){   # leave out spr data
+    next
+  }
   bd = allBuildings[j]
   
   # find DR vector file names
