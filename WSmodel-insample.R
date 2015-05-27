@@ -119,6 +119,8 @@ for (j in 1:numBuildings){
     # make predictions    
     predVector = neighborhood # No morning adjustment
 
+    # save observed and predicted values
+    
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
