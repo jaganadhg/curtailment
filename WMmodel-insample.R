@@ -37,12 +37,12 @@ numBuildings = length(allBuildings)
 # do for all buildings
 allMape = list()
 allDayCounts = list()
-setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
-
+  
   # find DR vector file names
+  setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))
   if(length(fList)==0){
     next
