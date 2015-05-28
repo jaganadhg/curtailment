@@ -95,7 +95,7 @@ for (j in 1:numBuildings){
     trainData = allData[-i,]
     testData = allData [i,]
     trainIndices = 1:dim(trainData)[1] 
-    testVector = testData [inDRindices]
+    testVector = testData[inDRindices]
     
     #--------------------------
     # define preDR data

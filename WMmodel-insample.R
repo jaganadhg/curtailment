@@ -4,6 +4,7 @@
 # Traindata is 2/3 of the entire data.
 # All predictions are saved
 
+library(MASS)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
@@ -69,27 +70,45 @@ for (j in 1:numBuildings){
   trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
   
-  ######################## 
-  mape = numeric(numTestDays)
-  obsDayCount = numeric(numTestDays)
+  trainDates = substr(fList[trainIndices],1,14)  
   
+  trainData = DRvectors[trainIndices,]  
+  allData = trainData
+  
+  ######################## 
+  # modify for insample data
+  mape = numeric(numTrainDays) 
+  obsDayCount = numeric(numTrainDays)
+  numTestDays = numTrainDays
+  
+  allPreds = NULL
+  allObs = NULL
   # make predictions
   for (i in 1:numTestDays){
-    testIndex = testIndices[i]
-    testVector = DRvectors[testIndex,inDRindices]
-    
+    trainData = allData[-i,]
+    testData = allData [i,]
+    trainIndices = 1:dim(trainData)[1] 
+    testVector = testData[inDRindices]
+     
     #--------------------------
-    # define training data
-    preDRsignatureTest = DRvectors[testIndex,preDRindices]
-    preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
+    # define preDR data
+    preDRsignatureTest = testData[preDRindices]
+    preDRsignatureTrain = trainData[,preDRindices]
+    
+    #preDRsignatureTest = DRvectors[testIndex,preDRindices]
+    #preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
     
     # calculate weights
     weights = preDRsignatureTest %*% ginv(preDRsignatureTrain)
     
     # make predictions    
-    inDRtrain = DRvectors[trainIndices,inDRindices]
+    #inDRtrain = DRvectors[trainIndices,inDRindices]
+    inDRtrain = trainData[,inDRindices]
     predVector = weights %*% inDRtrain
 
+    allPreds = rbind(allPreds,predVector)
+    allObs = rbind(allObs,testVector)
+    
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
@@ -98,18 +117,29 @@ for (j in 1:numBuildings){
     
     obsDayCount[i] = length(trainIndices)
     allDayCounts[[j]] = obsDayCount
-  } 
+  }
+  
+  # save observed and predicted values
+  setwd("~/Desktop/curtailment/Obs/wm/")
+  df1 = data.frame(date = substr(trainDates,5,15), obs=allObs)
+  opFile = paste(bd,"-obs.csv",sep="")
+  write.csv(df1,opFile,row.names=F) 
+  
+  setwd("~/Desktop/curtailment/Predictions/wm/")
+  df2 = data.frame(date = substr(trainDates,5,15), preds=allPreds)
+  opFile = paste(bd,"-preds.csv",sep="")
+  write.csv(df2,opFile,row.names=F) 
 }
 
 # save results
-setwd("~/Desktop/curtailment/MAPE/mape-wm/")
+setwd("~/Desktop/curtailment/MAPE/mape-wm-insample/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
   df = data.frame(mape = allMape[[i]],
                   daycounts = allDayCounts[[i]])
-  opFile = paste("mape-wm-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-wm-insample-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
