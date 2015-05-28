@@ -17,7 +17,7 @@ preDRindices = c(1:(beginDR-1),
 inDRindices = c(beginDR:endDR)
 
 #read DR vectors
-setwd("/Users/saima/Desktop/curtailment/")
+setwd("~/Desktop/curtailment/")
 
 # Find buildings from the DR schedule
 schedule12 = read.csv("data/DRevents2012.csv",header=TRUE)
@@ -36,13 +36,13 @@ numBuildings = length(allBuildings)
 # do for all buildings
 allMape = list()
 allDayCounts = list()
-setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
   cat(j, bd, ",")
   
   # find DR vector file names
+  setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))
   if(length(fList)==0){
     next
@@ -79,6 +79,8 @@ for (j in 1:numBuildings){
   obsDayCount = numeric(numTrainDays)
   numTestDays = numTrainDays
   
+  allPreds = NULL
+  allObs = NULL
   # make predictions
   for (i in 1:numTestDays){
     
@@ -129,6 +131,9 @@ for (j in 1:numBuildings){
           dailyProfile[k,inDRindices] * prob[k]
     }
 
+    allPreds = rbind(allPreds,predVector)
+    allObs = rbind(allObs,testVector)
+    
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
@@ -138,10 +143,22 @@ for (j in 1:numBuildings){
     obsDayCount[i] = length(trainIndices)
     allDayCounts[[j]] = obsDayCount
   } 
+  
+  # save observed and predicted values
+  setwd("~/Desktop/curtailment/Obs/knn/")
+  df1 = data.frame(date = substr(trainDates,5,15), obs=allObs)
+  opFile = paste(bd,"-obs.csv",sep="")
+  write.csv(df1,opFile,row.names=F) 
+  
+  setwd("~/Desktop/curtailment/Predictions/knn/")
+  df2 = data.frame(date = substr(trainDates,5,15), preds=allPreds)
+  opFile = paste(bd,"-preds.csv",sep="")
+  write.csv(df2,opFile,row.names=F) 
+  
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-knn-insample/")
+setwd("~/Desktop/curtailment/MAPE/mape-knn-insample/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
