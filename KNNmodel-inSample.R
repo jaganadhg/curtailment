@@ -69,6 +69,7 @@ for (j in 1:numBuildings){
   
   trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
+  trainDates = substr(fList[trainIndices],1,14)  
   
   trainData = DRvectors[trainIndices,]  
   allData = trainData
