@@ -2,8 +2,8 @@
 # based on WS model - weighted similarity
 # morning factor: 4 hrs before DR 
 # Traindata is 2/3 of the entire data.
+# All predictions are saved
 
-library(MASS)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
 vectorLength = 199
@@ -36,12 +36,12 @@ numBuildings = length(allBuildings)
 # do for all buildings
 allMape = list()
 allDayCounts = list()
-setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
 
   # find DR vector file names
+  setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))
   if(length(fList)==0){
     next
@@ -68,6 +68,16 @@ for (j in 1:numBuildings){
   
   trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
+    
+  trainDates = substr(fList[trainIndices],1,14)  
+  testDates = substr(fList[testIndices],1,14)  
+  
+  # save obs for testdates
+  setwd("~/Desktop/curtailment/Obs/test/")
+  df = data.frame(date = substr(testDates,5,15),
+                  obs=DRvectors[testIndices,inDRindices])
+  opFile = paste(bd,"-obs.csv",sep="")
+  write.csv(df,opFile,row.names=F) 
   
   trainData = DRvectors[trainIndices,]  
   allData = trainData
@@ -78,6 +88,8 @@ for (j in 1:numBuildings){
   obsDayCount = numeric(numTrainDays)
   numTestDays = numTrainDays
   
+  allPreds = NULL
+  allObs = NULL
   # make predictions
   for (i in 1:numTestDays){
     trainData = allData[-i,]
@@ -118,9 +130,9 @@ for (j in 1:numBuildings){
 
     # make predictions    
     predVector = neighborhood # No morning adjustment
-
-    # save observed and predicted values
-    
+    allPreds = rbind(allPreds,predVector)
+    allObs = rbind(allObs,testVector)
+   
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
@@ -130,9 +142,21 @@ for (j in 1:numBuildings){
     obsDayCount[i] = length(trainIndices)
     allDayCounts[[j]] = obsDayCount
   } 
+  
+  # save observed and predicted values
+  setwd("~/Desktop/curtailment/Obs/ws/")
+  df1 = data.frame(date = substr(trainDates,5,15), obs=allObs)
+  opFile = paste(bd,"-obs.csv",sep="")
+  write.csv(df1,opFile,row.names=F) 
+  
+  setwd("~/Desktop/curtailment/Predictions/ws/")
+  df2 = data.frame(date = substr(trainDates,5,15), preds=allPreds)
+  opFile = paste(bd,"-preds.csv",sep="")
+  write.csv(df2,opFile,row.names=F) 
+  
 }
 
-# save results
+# save mape results
 setwd("/Users/saima/Desktop/curtailment/MAPE/mape-ws-insample/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
