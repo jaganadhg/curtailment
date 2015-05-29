@@ -88,5 +88,12 @@ for (i in 1:numBds){
   }
   
   # calculate errors
+  ape = abs(ensLMpreds - obsTest)/obsTest
+  mape = apply(ape,1,mean)
+  
+  # save errors
+  setwd("~/Desktop/curtailment/MAPE/mape-enslm/")
+  opFile = paste("mape-enslm-",substr(fList[i],1,3),".csv",sep="")
+  write.csv(mape,opFile,row.names=F)    
   
 } # done for each building

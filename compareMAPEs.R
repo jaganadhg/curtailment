@@ -1,6 +1,6 @@
 # compare and plot mapes from different models
 
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-histmean/")
+setwd("~/Desktop/curtailment/MAPE/mape-histmean/")
 filesHM = list.files(pattern="*.csv")
 numFiles = length(filesHM)
 numTestDays = numeric(numFiles)
@@ -16,7 +16,7 @@ for (i in 1:numFiles){
 }
 
 # 2. find avg wd mape for all files
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wd/")
+setwd("~/Desktop/curtailment/MAPE/mape-wd/")
 filesWD = list.files(pattern="*.csv")
 numFiles = length(filesWD)
 
@@ -27,7 +27,7 @@ for (i in 1:numFiles){
 }
 
 # 3. find avg wm mape for all files
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wm/")
+setwd("~/Desktop/curtailment/MAPE/mape-wm/")
 filesWM = list.files(pattern="*.csv")
 numFiles = length(filesWM)
 
@@ -38,7 +38,7 @@ for (i in 1:numFiles){
 }
 
 # 4. find avg ws mape for all files
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-ws/")
+setwd("~/Desktop/curtailment/MAPE/mape-ws/")
 filesWS = list.files(pattern="*.csv")
 numFiles = length(filesWS)
 
@@ -49,7 +49,7 @@ for (i in 1:numFiles){
 }
 
 # 5. find avg knn mape for all files
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-knn/")
+setwd("~/Desktop/curtailment/MAPE/mape-knn/")
 filesKNN = list.files(pattern="*.csv")
 numFiles = length(filesKNN)
 
@@ -60,7 +60,7 @@ for (i in 1:numFiles){
 }
 
 # 6. find avg knn mape for all files
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-knn-global/")
+setwd("~/Desktop/curtailment/MAPE/mape-knn-global/")
 filesKNNg = list.files(pattern="*.csv")
 numFiles = length(filesKNNg)
 
@@ -68,6 +68,17 @@ avgKNNgError = numeric(numFiles)
 for (i in 1:numFiles){
   errors = read.csv(filesKNNg[i])
   avgKNNgError[i] = mean(errors$mape)
+}
+
+# 7. find avg ensLM mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ensLM/")
+filesEnsLM = list.files(pattern="*.csv")
+numFiles = length(filesEnsLM)
+
+avgEnsLMerror = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesEnsLM[i])
+  avgEnsLMerror[i] = mean(errors$x)
 }
 
 # save results 
@@ -79,7 +90,8 @@ df = data.frame(building = substr(filesWD,9,11),
                 WM = avgWMerror,
                 WS = avgWSerror,
                 KNN = avgKNNerror,
-                KNNglobal = avgKNNgError)
+                KNNglobal = avgKNNgError,
+                EnsLM = avgEnsLMerror)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
@@ -88,6 +100,9 @@ df$building = as.character(df$building)
 rowx = dim(df)[1]
 df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
             mean(df$Histmean),mean(df$WD),mean(df$WM),
-            mean(df$WS),mean(df$KNN),mean(df$KNNglobal))
+            mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
+            mean(df$EnsLM))
 
 write.csv(df,"../avg-mapes.csv",row.names=F)
+
+
