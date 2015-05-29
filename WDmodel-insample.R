@@ -1,6 +1,7 @@
-# This script makes predictions for each DR day
+# This script makes predictions for each DR day *in Sample* 
 # based on WD model
 # Traindata is 2/3 of the entire data.
+# All predictions are saved
 
 library(MASS)
 beginDR = 54 # 1:15 PM
@@ -65,24 +66,39 @@ for (j in 1:numBuildings){
   
   trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
-  testDates = substr(fList[testIndices],1,14)
+
+  trainDates = substr(fList[trainIndices],1,14)  
+  testDates = substr(fList[testIndices],1,14)  
+  
+  trainData = DRvectors[trainIndices,]  
+  allData = trainData
   
   ######################## 
-  mape = numeric(numTestDays)
-  obsDayCount = numeric(numTestDays)
+  mape = numeric(numTrainDays) 
+  obsDayCount = numeric(numTrainDays)
+  numTestDays = numTrainDays
+  
   allPreds = NULL
+  allObs = NULL
   
   # make predictions
   for (i in 1:numTestDays){
-    testIndex = testIndices[i]
-    testVector = DRvectors[testIndex,inDRindices]
+    trainData = allData[-i,]
+    testData = allData [i,]
+    trainIndices = 1:dim(trainData)[1] 
+    testVector = testData[inDRindices]
     
+    #testIndex = testIndices[i]
+    #testVector = DRvectors[testIndex,inDRindices]
     #--------------------------
     # define training data
     #wkend = c(198,199)
     #trainData = DRvectors[trainIndices,-wkend]
-    preDRsignatureTest = DRvectors[testIndex,preDRindices]
-    preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
+    #preDRsignatureTest = DRvectors[testIndex,preDRindices]
+    #preDRsignatureTrain = DRvectors[trainIndices,preDRindices]
+    
+    preDRsignatureTest = testData[preDRindices]
+    preDRsignatureTrain = trainData[,preDRindices]
     
     # calculate weights
     weights = preDRsignatureTest %*% ginv(preDRsignatureTrain)
@@ -91,6 +107,7 @@ for (j in 1:numBuildings){
     inDRtrain = DRvectors[trainIndices,inDRindices]
     predVector = weights %*% inDRtrain
     allPreds = rbind(allPreds,predVector)
+    allObs = rbind(allObs,testVector)
     
     #--------------------------
     # calculate errors
@@ -102,23 +119,28 @@ for (j in 1:numBuildings){
     allDayCounts[[j]] = obsDayCount
   } 
   
-  # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/wd-test/")
-  df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
+  # save observed and predicted values
+  setwd("~/Desktop/curtailment/Obs/wd/")
+  df1 = data.frame(date = substr(trainDates,5,15), obs=allObs)
+  opFile = paste(bd,"-obs.csv",sep="")
+  write.csv(df1,opFile,row.names=F) 
+  
+  setwd("~/Desktop/curtailment/Predictions/wd/")
+  df2 = data.frame(date = substr(trainDates,5,15), preds=allPreds)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
   
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wd/")
+setwd("~/Desktop/curtailment/MAPE/mape-wd-insample/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
   df = data.frame(mape = allMape[[i]],
                   daycounts = allDayCounts[[i]])
-  opFile = paste("mape-wd-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-wd-insample-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
