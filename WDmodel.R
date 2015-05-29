@@ -111,7 +111,7 @@ for (j in 1:numBuildings){
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wd/")
+setwd("~/Desktop/curtailment/MAPE/mape-wd/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  

@@ -102,7 +102,13 @@ for (i in 1:numBds){
                   newdata = data.frame(preds1 = predsWDtest[,j],
                                        preds2 = predsWStest[,j],
                                        preds3 = predsKNNtest[,j]))
-    ensNNpreds = cbind(ensNNpreds, preds)
+    
+    testData = data.frame(preds1 = predsWDtest[,j],
+                          preds2 = predsWStest[,j],
+                          preds3 = predsKNNtest[,j])
+    preds = predict(NNmodels[[j]], newdata = df[-obs])
+    
+                ensNNpreds = cbind(ensNNpreds, preds)
   }
   
   # calculate errors

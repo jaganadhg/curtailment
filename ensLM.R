@@ -1,6 +1,7 @@
 # use linear model to find model weights
 # ensLM1: WM, WS, KNN
 # ensLM2: WD, WS, KNN
+# ensLM3: HM, WS, KNN 
 
 setwd("~/Desktop/curtailment/Obs/wm/")
 fList = list.files()
@@ -17,6 +18,12 @@ for (i in 1:numBds){
   setwd("~/Desktop/curtailment/Obs/wm/")
   allObs = read.csv(fList[i],header=TRUE,as.is=TRUE)
   allObs = allObs[,2:17]
+  
+  # read predicted values - HM model
+  setwd("~/Desktop/curtailment/Predictions/histmean/")
+  inFile = paste(bd,"-preds.csv",sep="")
+  predsHM = read.csv(inFile,header=TRUE,as.is=TRUE)
+  predsHM = predsHM[,2:17]
   
   # read predicted values - WD model
   setwd("~/Desktop/curtailment/Predictions/wd/")
@@ -47,7 +54,7 @@ for (i in 1:numBds){
   for (j in 1:16){
     
     # build a linear model
-    df = data.frame(preds1 = predsWD[,j],
+    df = data.frame(preds1 = predsHM[,j],
                     preds2 = predsWS[,j],
                     preds3 = predsKNN[,j],
                        obs = allObs[,j])
@@ -63,6 +70,12 @@ for (i in 1:numBds){
   inFile = paste(bd,"-obs.csv",sep="")
   obsTest = read.csv(inFile,header=TRUE,as.is=TRUE)
   obsTest = obsTest[,2:17]
+  
+  # read HM prediction
+  setwd("~/Desktop/curtailment/Predictions/histmean-test/")
+  inFile = paste(bd,"-preds.csv",sep="")
+  predsHMtest = read.csv(inFile,header=TRUE,as.is=TRUE)
+  predsHMtest = predsHMtest[,2:17]
   
   # read WD prediction
   setwd("~/Desktop/curtailment/Predictions/wd-test/")
@@ -93,7 +106,7 @@ for (i in 1:numBds){
   for (j in 1:16){
     
     preds = predict(LMmodels[[j]], 
-                  newdata = data.frame(preds1 = predsWDtest[,j],
+                  newdata = data.frame(preds1 = predsHMtest[,j],
                                        preds2 = predsWStest[,j],
                                        preds3 = predsKNNtest[,j]))
     ensLMpreds = cbind(ensLMpreds, preds)
@@ -104,7 +117,7 @@ for (i in 1:numBds){
   mape = apply(ape,1,mean)
   
   # save errors
-  setwd("~/Desktop/curtailment/MAPE/mape-enslm2/")
+  setwd("~/Desktop/curtailment/MAPE/mape-enslm3/")
   opFile = paste("mape-enslm-",substr(fList[i],1,3),".csv",sep="")
   write.csv(mape,opFile,row.names=F)    
   
