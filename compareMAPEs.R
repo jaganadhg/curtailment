@@ -1,5 +1,9 @@
 # compare and plot mapes from different models
 
+library(ggplot2)
+library(reshape2)
+library(plyr)
+
 setwd("~/Desktop/curtailment/MAPE/mape-histmean/")
 filesHM = list.files(pattern="*.csv")
 numFiles = length(filesHM)
@@ -107,6 +111,8 @@ df = data.frame(building = substr(filesWD,9,11),
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
+rownames(df)=NULL
+
 # add a row of avg error values
 df$building = as.character(df$building)
 rowx = dim(df)[1]
@@ -117,18 +123,17 @@ df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
 
 write.csv(df,"../avg-mapes.csv",row.names=F)
 
+# remove the last row of averages
+df = df[-(rowx+1),]
+
 #-------------------------
-# plot cdf errors
-plot(ecdf(df$Histmean),pch=20,cex=.75,xlim=c(0,1),col="red",
-     xlab = "MAPE",ylab = "Fraction of buildings",main="")
-lines(ecdf(df$WM),col="green",pch=20,cex=.75)
-lines(ecdf(df$WS),col="yellow",pch=20,cex=.75)
-lines(ecdf(df$KNN),col="blue",pch=20,cex=.75)
-lines(ecdf(df$EnsLM),col="grey",pch=20,cex=.75)
-#lines(ecdf(),col="magenta",pch=20,cex=.75)
-#lines(ecdf(),col="orange",pch=20,cex=.75)
-
-legend(0.55,0.5,c("Histmean","WM","WS","KNN","EnsLM"),
-       col=c("red","green","yellow","blue","grey"),
-       lty=c(1,1,1,1,1),lwd=c(3,3,3,3,3))
-
+#plot ecdf with ggplot
+df1 = subset(df, select =
+               c(building,Histmean,WD,WS,KNN,EnsLM))
+df2 = melt(df1,id="building")
+cdfplot = ggplot(df2, aes(x=value)) + 
+            stat_ecdf(aes(colour = variable))
+cdfplot + xlab("MAPE") + 
+          ylab("Fraction of Buildings") + 
+          theme(legend.position="top")+
+          theme(legend.title = element_blank())
