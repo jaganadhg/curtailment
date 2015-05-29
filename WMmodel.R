@@ -3,7 +3,6 @@
 # morning factor: 4 hrs before DR 
 # Traindata is 2/3 of the entire data.
 
-rm(list=ls())
 library(MASS)
 beginDR = 54 # 1:15 PM
 endDR = 69 # 5:00 PM
@@ -18,7 +17,7 @@ preDRindices = c(((beginDR-16)):(beginDR-1),
 inDRindices = c(beginDR:endDR)
 
 #read DR vectors
-setwd("/Users/saima/Desktop/curtailment/")
+setwd("~/Desktop/curtailment/")
 
 # Find buildings from the DR schedule
 schedule12 = read.csv("data/DRevents2012.csv",header=TRUE)
@@ -37,12 +36,12 @@ numBuildings = length(allBuildings)
 # do for all buildings
 allMape = list()
 allDayCounts = list()
-setwd("/Users/saima/Desktop/curtailment/makedatasets/DRdataset/")
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
 
   # find DR vector file names
+  setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))
   if(length(fList)==0){
     next
@@ -69,10 +68,12 @@ for (j in 1:numBuildings){
   
   trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
+  testDates = substr(fList[testIndices],1,14)
   
   ######################## 
   mape = numeric(numTestDays)
   obsDayCount = numeric(numTestDays)
+  allPreds = NULL
   
   # make predictions
   for (i in 1:numTestDays){
@@ -90,7 +91,8 @@ for (j in 1:numBuildings){
     # make predictions    
     inDRtrain = DRvectors[trainIndices,inDRindices]
     predVector = weights %*% inDRtrain
-
+    allPreds = rbind(allPreds,predVector)
+    
     #--------------------------
     # calculate errors
     ape = abs(predVector - testVector)/testVector
@@ -100,10 +102,17 @@ for (j in 1:numBuildings){
     obsDayCount[i] = length(trainIndices)
     allDayCounts[[j]] = obsDayCount
   } 
+  
+  # save predicted values  
+  setwd("~/Desktop/curtailment/Predictions/wm-test/")
+  df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
+  opFile = paste(bd,"-preds.csv",sep="")
+  write.csv(df2,opFile,row.names=F) 
+  
 }
 
 # save results
-setwd("/Users/saima/Desktop/curtailment/MAPE/mape-wm/")
+setwd("~/Desktop/curtailment/MAPE/mape-wm/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
