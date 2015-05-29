@@ -2,7 +2,9 @@
 # ensNN: WD, WS, KNN
 
 library(nnet)
+library(neuralnet)
 library(NeuralNetTools)
+
 setwd("~/Desktop/curtailment/Obs/wm/")
 fList = list.files()
 numBds = length(fList)
@@ -47,12 +49,15 @@ for (i in 1:numBds){
   # do for each interval
   for (j in 1:16){
     
-    # build a linear model
+    # build a nn model
     df = data.frame(preds1 = predsWD[,j],
                     preds2 = predsWS[,j],
                     preds3 = predsKNN[,j],
                        obs = allObs[,j])
-    myNN = lm(obs ~ preds1 + preds2 + preds3, data = df)
+    #myNN = lm(obs ~ preds1 + preds2 + preds3, data = df)
+    myNN = nnet(obs~., data=df,
+                size=20,maxit=10000,decay=.001)
+    
     NNmodels[[j]] = myNN
   }
   
@@ -93,7 +98,6 @@ for (i in 1:numBds){
   ensNNpreds = NULL
   for (j in 1:16){
     
-    # build a linear model
     preds = predict(NNmodels[[j]], 
                   newdata = data.frame(preds1 = predsWDtest[,j],
                                        preds2 = predsWStest[,j],

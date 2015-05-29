@@ -92,7 +92,6 @@ for (i in 1:numBds){
   ensLMpreds = NULL
   for (j in 1:16){
     
-    # build a linear model
     preds = predict(LMmodels[[j]], 
                   newdata = data.frame(preds1 = predsWDtest[,j],
                                        preds2 = predsWStest[,j],
