@@ -153,21 +153,6 @@ df = data.frame(building = substr(filesWD,9,11),
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
 rownames(df) = NULL
 
-# add a row of avg error values
-df$building = as.character(df$building)
-rowx = dim(df)[1]
-df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
-            mean(df$Histmean),mean(df$WD),mean(df$WM),
-            mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
-            mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3),
-            mean(df$EnsRT),mean(df$EnsRF))
-
-write.csv(df,"../avg-mapes.csv",row.names=F)
-
-# remove the last row of averages
-df = df[-(rowx+1),]
-rownames(df) = NULL
-
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
@@ -179,3 +164,26 @@ cdfplot + xlab("MAPE") +
           ylab("Fraction of Buildings") + 
           theme(legend.position="top")+
           theme(legend.title = element_blank())
+
+#---------------------
+# add a row of avg error values
+df$building = as.character(df$building)
+rowx = dim(df)[1]
+df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
+                mean(df$Histmean),mean(df$WD),mean(df$WM),
+                mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
+                mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3),
+                mean(df$EnsRT),mean(df$EnsRF))
+df[rowx+2,] = c("Std. dev Error",sum(df$numTestDays),sum(df$numTrainDays),
+                sd(df$Histmean),sd(df$WD),sd(df$WM),
+                sd(df$WS),sd(df$KNN),sd(df$KNNglobal),
+                sd(df$EnsLM),sd(df$EnsLM2),sd(df$EnsLM3),
+                sd(df$EnsRT),sd(df$EnsRF))
+
+write.csv(df,"../avg-mapes.csv",row.names=F)
+
+# remove the last row of averages
+#df = df[-(rowx+1),]
+#rownames(df) = NULL
+
+
