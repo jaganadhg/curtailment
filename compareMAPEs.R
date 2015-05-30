@@ -169,12 +169,13 @@ cdfplot + xlab("MAPE") +
 # add a row of avg error values
 df$building = as.character(df$building)
 rowx = dim(df)[1]
-df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
+df1 = df
+df1[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
                 mean(df$Histmean),mean(df$WD),mean(df$WM),
                 mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
                 mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3),
                 mean(df$EnsRT),mean(df$EnsRF))
-df[rowx+2,] = c("Std. dev Error",sum(df$numTestDays),sum(df$numTrainDays),
+df1[rowx+2,] = c("Std. dev Error",sum(df$numTestDays),sum(df$numTrainDays),
                 sd(df$Histmean),sd(df$WD),sd(df$WM),
                 sd(df$WS),sd(df$KNN),sd(df$KNNglobal),
                 sd(df$EnsLM),sd(df$EnsLM2),sd(df$EnsLM3),
