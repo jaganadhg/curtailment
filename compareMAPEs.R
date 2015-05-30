@@ -121,6 +121,17 @@ for (i in 1:numFiles){
   avgEnsRTerror[i] = mean(errors$x)
 }
 
+# 11. find avg ensRF mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
+filesEnsRF = list.files(pattern="*.csv")
+numFiles = length(filesEnsRT)
+
+avgEnsRFerror = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesEnsRF[i])
+  avgEnsRFerror[i] = mean(errors$x)
+}
+
 #----------------------------
 # save results 
 df = data.frame(building = substr(filesWD,9,11),
@@ -135,7 +146,8 @@ df = data.frame(building = substr(filesWD,9,11),
                 EnsLM = avgEnsLMerror,
                 EnsLM2 = avgEnsLMerror2,
                 EnsLM3 = avgEnsLMerror3,
-                EnsRT = avgEnsRTerror)
+                EnsRT = avgEnsRTerror,
+                EnsRF = avgEnsRFerror)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
@@ -148,17 +160,18 @@ df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
             mean(df$Histmean),mean(df$WD),mean(df$WM),
             mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
             mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3),
-            mean(df$EnsRT))
+            mean(df$EnsRT),mean(df$EnsRF))
 
 write.csv(df,"../avg-mapes.csv",row.names=F)
 
 # remove the last row of averages
 df = df[-(rowx+1),]
+rownames(df) = NULL
 
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,Histmean,WD,WS,KNN,EnsLM))
+               c(building,Histmean,WS,KNN,EnsLM3))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable))
