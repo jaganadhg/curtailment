@@ -52,6 +52,7 @@ for (i in 1:numFiles){
   avgWSerror[i] = mean(errors$mape)
 }
 
+#----------------------------
 # 5. find avg knn mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-knn/")
 filesKNN = list.files(pattern="*.csv")
@@ -74,6 +75,7 @@ for (i in 1:numFiles){
   avgKNNgError[i] = mean(errors$mape)
 }
 
+#----------------------------
 # 7. find avg ensLM mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-ensLM/")
 filesEnsLM = list.files(pattern="*.csv")
@@ -107,6 +109,19 @@ for (i in 1:numFiles){
   avgEnsLMerror3[i] = mean(errors$x)
 }
 
+#----------------------------
+# 10. find avg ensRT mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ensrt/")
+filesEnsRT = list.files(pattern="*.csv")
+numFiles = length(filesEnsRT)
+
+avgEnsRTerror = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesEnsRT[i])
+  avgEnsRTerror[i] = mean(errors$x)
+}
+
+#----------------------------
 # save results 
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
@@ -119,11 +134,12 @@ df = data.frame(building = substr(filesWD,9,11),
                 KNNglobal = avgKNNgError,
                 EnsLM = avgEnsLMerror,
                 EnsLM2 = avgEnsLMerror2,
-                EnsLM3 = avgEnsLMerror3)
+                EnsLM3 = avgEnsLMerror3,
+                EnsRT = avgEnsRTerror)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
-rownames(df)=NULL
+rownames(df) = NULL
 
 # add a row of avg error values
 df$building = as.character(df$building)
@@ -131,7 +147,8 @@ rowx = dim(df)[1]
 df[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
             mean(df$Histmean),mean(df$WD),mean(df$WM),
             mean(df$WS),mean(df$KNN),mean(df$KNNglobal),
-            mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3))
+            mean(df$EnsLM),mean(df$EnsLM2),mean(df$EnsLM3),
+            mean(df$EnsRT))
 
 write.csv(df,"../avg-mapes.csv",row.names=F)
 
