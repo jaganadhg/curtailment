@@ -171,7 +171,7 @@ rownames(df) = NULL
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,Histmean,WS,KNN,EnsLM3))
+               c(building,Histmean,EnsRF))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable))
