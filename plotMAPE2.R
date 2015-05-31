@@ -63,6 +63,28 @@ for (j in 1:numBuildings){
 avgKWH = avgKWH[-c(16, 24, 25)]
 newbd = newbd[-c(16, 24, 25)]
 
+# frame the data
+df = data.frame(building = as.character(errors$building),
+                avgKWH = avgKWH,
+                HistMean = errors$Histmean,
+                EnsRF = errors$EnsRF)
+
+df1 = melt(df, id = c("building","avgKWH"))
+g1 = ggplot(df1) + 
+  geom_point(size=3,
+             aes(avgKWH,value,
+                 color = variable,
+                 shape = variable)) +
+  geom_smooth(method=lm, aes(x=avgKWH, y=value, color = variable)) 
+g2 = g1 + xlab("Average electricity consumption (in kWH)") + ylab("MAPE") +
+  theme(legend.position = "top") +
+  theme(legend.title = element_blank())
+
+g3 = g2 + theme(legend.text = element_text(size = 16)) +
+  theme(axis.title = element_text(size=14)) +
+  theme(axis.text = element_text(size=14))
+g3
+
 
   #-----------------------
 # 4. Paired boxplots
