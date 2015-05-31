@@ -15,8 +15,6 @@ avgError = numeric(numFiles)
 for (i in 1:numFiles){
   errors = read.csv(filesHM[i])
   avgError[i] = mean(errors$mape)
-  numTestDays[i] = dim(errors)[1]
-  numTrainDays[i] = errors$daycounts[1]
 }
 
 # 2. find avg wd mape for all files
@@ -50,6 +48,8 @@ avgWSerror = numeric(numFiles)
 for (i in 1:numFiles){
   errors = read.csv(filesWS[i])
   avgWSerror[i] = mean(errors$mape)
+  numTestDays[i] = dim(errors)[1]
+  numTrainDays[i] = errors$daycounts[1]
 }
 
 #----------------------------
