@@ -1,4 +1,4 @@
-# plot histogram of events per building
+# scatter plots 
 
 library(ggplot2)
 library(reshape2)

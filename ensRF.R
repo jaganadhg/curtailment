@@ -66,6 +66,7 @@ for (i in 1:numBds){
   setwd("~/Desktop/curtailment/Obs/test/")
   inFile = paste(bd,"-obs.csv",sep="")
   obsTest = read.csv(inFile,header=TRUE,as.is=TRUE)
+  obDates = obsTest$date
   obsTest = obsTest[,2:17]
   
   # read HM prediction
@@ -112,6 +113,12 @@ for (i in 1:numBds){
   # calculate errors
   ape = abs(ensRFpreds - obsTest)/obsTest
   mape = apply(ape,1,mean)
+  
+  # save predicted values  
+  setwd("~/Desktop/curtailment/Predictions/ensRF-test/")
+  df2 = data.frame(date = obDates, preds=ensRFpreds)
+  opFile = paste(bd,"-preds.csv",sep="")
+  write.csv(df2,opFile,row.names=F) 
   
   # save errors
   setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
