@@ -28,18 +28,23 @@ df = data.frame(building = substr(filesWS,9,11),
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
 rownames(df) = NULL
-colnames(df) = c("Building","Training Days", "Test Days")
 
 # plot stacked barplots
 df1 = melt(df, id="building")
 
-stack = ggplot(df1, aes(x = building, y = value, fill=variable)) +
+stack1 = ggplot(df1, aes(x = building, y = value, fill=variable)) +
           geom_bar(stat="identity") + 
           xlab("Building") + ylab("Count") +
           theme(legend.position = "top") +
           theme(legend.title = element_blank()) +
-          theme(axis.text.x = element_text(angle=90, vjust=1)) 
-stack + scale_fill_discrete(labels=c("Training Days", "Test Days"))
+          theme(axis.text.x = element_text(angle=90, vjust=1))
+
+stack2 = stack1 +
+          scale_fill_discrete(labels=c("Training Days  ", "Test Days")) + 
+          theme(legend.text = element_text(size = 16)) +
+          theme(axis.title = element_text(size=14)) +
+          theme(axis.text = element_text(size=14))
+stack2
 
 #-----------------------
 # plot histograms
