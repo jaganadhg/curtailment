@@ -9,6 +9,9 @@ setwd("~/Desktop/curtailment/Obs/test/")
 fList = list.files(pattern = paste("*.csv"))
 fList = fList [-c(16,24,25,26)]
 numFiles = length(fList)
+
+dateList = NULL
+dowList = NULL
 bdList = NULL
 mapeHM = NULL
 mapeEns = NULL
@@ -19,6 +22,7 @@ for (j in 1:numFiles){
   setwd("~/Desktop/curtailment/Obs/test/")
   obs = read.csv(fList[j])  
   DRdates = obs$date
+  DRdow = weekdays(as.Date(DRdates))
   obs = obs[,2:17]
   
   # read predicted values HM
@@ -38,14 +42,22 @@ for (j in 1:numFiles){
   mapeEns = c(mapeEns,errorsEns)
   
   bdList = c(bdList, rep(bd,length(errorsHM)))
+  dateList = c(dateList,DRdates)
+  dowList = c(dowList,DRdow)
   cat(bd, ":", length(errorsHM), ",", length(errorsEns), "\n")
 }
 
+#------------------------------
 # frame the data
 df = data.frame(building = bdList,
+                dowList = dowList,
+                dateList = dateList,
                 mapeHM = mapeHM,
                 mapeEns = mapeEns)
-df1 = melt(df, id="building")
+df1 = melt(df, id=c("building","dowList","dateList"))
+
+#------------------------------
+# 1. paired boxplots
 g1 = ggplot(df1) +
   geom_boxplot(aes(x=building, y=value,color=variable)) + 
   theme(axis.text.x = element_text(angle=90, vjust=1)) + 
@@ -58,12 +70,5 @@ g2 = g1 + xlab("Building") + ylab("MAPE") +
       theme(axis.text = element_text(size=14))
 g2
 
-
-  #-----------------------
-# 4. Paired boxplots
-df1 = melt(df, id="building")
-g1 = ggplot(df1) +
-  geom_boxplot(aes(x=building, y=value,color=variable)) + 
-  theme(axis.text.x = element_text(angle=90, vjust=1)) + 
-  theme(legend.position = "top")
-g1  
+#------------------------------
+#2. DoW boxplots

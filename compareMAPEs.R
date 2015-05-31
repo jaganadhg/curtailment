@@ -159,11 +159,14 @@ df1 = subset(df, select =
                c(building,Histmean,EnsRF))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
-            stat_ecdf(aes(colour = variable))
+            stat_ecdf(aes(colour = variable), size=1)
 cdfplot + xlab("MAPE") + 
           ylab("Fraction of Buildings") + 
           theme(legend.position="top")+
-          theme(legend.title = element_blank())
+          theme(legend.title = element_blank()) +
+          theme(legend.text = element_text(size = 16)) +
+          theme(axis.title = element_text(size=14)) +
+          theme(axis.text = element_text(size=14))
 
 #---------------------
 # add a row of avg error values
