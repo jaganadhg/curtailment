@@ -94,8 +94,8 @@ g1 = ggplot(df1) +
              aes(sdKWH,value,
                  color = variable,
                  shape = variable)) +
-  geom_smooth(method=lm, aes(x=avgKWH, y=value, color = variable)) 
-g2 = g1 + xlab("Average electricity consumption (in kWH)") + ylab("MAPE") +
+  geom_smooth(method=lm, aes(x=sdKWH, y=value, color = variable)) 
+g2 = g1 + xlab("Standard deviation of electricity consumption (in kWH)") + ylab("MAPE") +
   theme(legend.position = "top") +
   theme(legend.title = element_blank())
 
