@@ -68,12 +68,12 @@ newbd = newbd[-c(16, 24, 25)]
 df = data.frame(building = as.character(errors$building),
                 avgKWH = avgKWH,
                 sdKWH = sdKWH,
-                HistMean = errors$Histmean,
-                EnsRF = errors$EnsRF)
+                IDS = errors$Histmean,
+                Ensemble = errors$EnsRF)
 
 #1. scatter plot kwh vs mape
 df1 = melt(df, id = c("building","avgKWH","sdKWH"))
-g1 = ggplot(df1) + 
+g1 = ggplot(df1) + theme_bw() +
   geom_point(size=3,
              aes(avgKWH,value,
                  color = variable,
@@ -89,7 +89,7 @@ g3 = g2 + theme(legend.text = element_text(size = 16)) +
 g3
 
 # 2. scatter plot sd kwh vs mape
-g1 = ggplot(df1) + 
+g1 = ggplot(df1) + theme_bw() +
   geom_point(size=3,
              aes(sdKWH,value,
                  color = variable,

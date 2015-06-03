@@ -124,7 +124,7 @@ for (i in 1:numFiles){
 # 11. find avg ensRF mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
 filesEnsRF = list.files(pattern="*.csv")
-numFiles = length(filesEnsRT)
+numFiles = length(filesEnsRF)
 
 avgEnsRFerror = numeric(numFiles)
 for (i in 1:numFiles){
@@ -132,12 +132,23 @@ for (i in 1:numFiles){
   avgEnsRFerror[i] = mean(errors$x)
 }
 
+# 12. find avg ensRF2 mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ensrf2/")
+filesEnsRF2 = list.files(pattern="*.csv")
+numFiles = length(filesEnsRF2)
+
+avgEnsRFerror2 = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesEnsRF2[i])
+  avgEnsRFerror2[i] = mean(errors$x)
+}
+
 #----------------------------
 # save results 
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
-                Histmean = avgError,
+                IDS = avgError,
                 WD = avgWDerror,
                 WM = avgWMerror,
                 WS = avgWSerror,
@@ -147,7 +158,8 @@ df = data.frame(building = substr(filesWD,9,11),
                 EnsLM2 = avgEnsLMerror2,
                 EnsLM3 = avgEnsLMerror3,
                 EnsRT = avgEnsRTerror,
-                EnsRF = avgEnsRFerror)
+                Ensemble = avgEnsRFerror,
+                EnsRF2 = avgEnsRFerror2)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
@@ -156,18 +168,19 @@ rownames(df) = NULL
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,Histmean,EnsRF))
+               c(building,IDS,Ensemble))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable), size=1)
-cdfplot + xlab("MAPE") + 
+g1 = cdfplot + theme_bw() + 
+          xlab("MAPE") + 
           ylab("Fraction of Buildings") + 
           theme(legend.position="top")+
           theme(legend.title = element_blank()) +
           theme(legend.text = element_text(size = 16)) +
           theme(axis.title = element_text(size=14)) +
           theme(axis.text = element_text(size=14))
-
+g1
 #---------------------
 # add a row of avg error values
 df$building = as.character(df$building)

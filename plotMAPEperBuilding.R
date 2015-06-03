@@ -1,14 +1,12 @@
 # box n whisker plots - semester & dow
+# SAL 21, TCC 28, KAP 14 - Ensemble
 
 library(ggplot2)
 library(reshape2)
 library(plyr)
 library(lubridate)
 
-newBD = c("B1","B2","B3","B4","B5","B6","B7","B8","B9","B10",
-          "B11","B12","B13","B14","B15","B16","B17","B18","B19","B20",
-          "B21","B22","B23","B24","B25","B26","B27","B28","B29","B30",
-          "B31","B32","B33")
+bid = 28
 
 # define season limits
 summerStart12 = as.POSIXct("2012-05-16"); # May 16
@@ -32,8 +30,13 @@ dowList = NULL
 bdList = NULL
 mapeHM = NULL
 mapeEns = NULL
+
 for (j in 1:numFiles){
+  if(j != bid){
+    next
+  }
   bd = substr(fList[j],1,3)
+  cat(bd, "\n") 
     
   # read observed values
   setwd("~/Desktop/curtailment/Obs/test/")
@@ -90,7 +93,7 @@ for (j in 1:numFiles){
   errorsEns = apply(errorsEns, 1, mean)
   mapeEns = c(mapeEns,errorsEns)
   
-  bdList = c(bdList, rep(newBD[j],length(errorsHM)))
+  bdList = c(bdList, rep(bd,length(errorsHM)))
   dateList = c(dateList,DRdates)
   dowList = c(dowList,DRdow)
   cat(bd, ":", length(errorsHM), ",", length(errorsEns), "\n")
@@ -104,40 +107,42 @@ df = data.frame(building = bdList,
                 seasonList = seasonList,
                 IDS = mapeHM,
                 Ensemble = mapeEns)
-df$building = factor(df$building, levels = df$building)
 df1 = melt(df, id=c("building","dowList","dateList", "seasonList"))
 
 #------------------------------
 # 1. paired boxplots
-
 g1 = ggplot(df1) + theme_bw() +
-  geom_boxplot(aes(x=building, y=value,fill=variable)) + 
-  theme(axis.text.x = element_text(angle=90, vjust=1)) + 
-  theme(legend.position = "top")
+  geom_boxplot(aes(x=building, y=value, fill=variable),
+               width = 0.25) + 
+  theme(legend.position = "top") 
 
-g2 = g1 + xlab("Building") + ylab("MAPE") +
+g2 = g1 + 
       theme(legend.title = element_blank()) + 
-      theme(legend.text = element_text(size = 16)) +
-      theme(axis.title = element_text(size=14)) +
-      theme(axis.text = element_text(size=14))
-g2
-
+      theme(legend.text = element_text(size = 20)) +
+      theme(axis.title = element_blank()) +
+      theme(axis.text = element_text(size=20)) + 
+      theme(axis.text.x = element_blank())
+g2 
 #------------------------------
 #2. DoW boxplots
 
 df1$dowList_f= factor(df1$dowList, levels = 
                 c('Monday','Tuesday','Wednesday','Thursday','Friday'))
   
-g1 = ggplot(df1) +
-  geom_boxplot(aes(x=variable, y=value,color=variable)) +
+g1 = ggplot(df1) + theme_bw() +
+  geom_boxplot(aes(x=variable, y=value,fill=variable)) +
   facet_grid(. ~ dowList_f) + 
-  theme(legend.position = "top")
+  theme(legend.position = "top") + 
+  theme(strip.text = element_text(size=18))
 
-g2 = g1 + xlab("Model") + ylab("MAPE") +
+g2 = g1 + xlab("") + ylab("MAPE") +
   theme(legend.title = element_blank()) + 
-  theme(legend.text = element_text(size = 16)) +
-  theme(axis.title = element_text(size=14)) +
-  theme(axis.text.x = element_blank())
+  theme(legend.text = element_text(size = 20)) +
+  theme(axis.text = element_text(size=20)) +
+  theme(axis.text.x = element_blank()) + 
+  theme(axis.title = element_blank()) +
+  scale_x_discrete(breaks=NULL)
+  
 g2
 
 #------------------------------
@@ -146,15 +151,20 @@ g2
 df1$seasonList_f= factor(df1$seasonList, levels = 
                         c('Spring','Summer','Fall'))
 
-g1 = ggplot(df1) +
-  geom_boxplot(aes(x=variable, y=value,color=variable)) +
+g1 = ggplot(df1) + theme_bw() +
+  geom_boxplot(aes(x=variable, y=value,fill=variable),
+               width = 0.65) +
   facet_grid(. ~ seasonList_f) + 
-  theme(legend.position = "top")
+  theme(legend.position = "top") +
+  theme(strip.text = element_text(size=20))
 
-g2 = g1 + xlab("Model") + ylab("MAPE") +
+g2 = g1 + xlab("") + ylab("MAPE") +
   theme(legend.title = element_blank()) + 
-  theme(legend.text = element_text(size = 16)) +
-  theme(axis.title = element_text(size=14)) +
-  theme(axis.text.x = element_blank())
+  theme(legend.text = element_text(size = 20)) +
+  theme(axis.text = element_text(size=20)) +
+  theme(axis.text.x = element_blank()) + 
+  theme(axis.title = element_blank()) +
+  scale_x_discrete(breaks=NULL)
+
 g2
 

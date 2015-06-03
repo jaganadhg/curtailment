@@ -17,8 +17,8 @@ errors = errors[1:32,]
 
 # frame the data
 df = data.frame(building = as.character(errors$building),
-                HistMean = errors$Histmean,
-                EnsRF = errors$EnsRF)
+                IDS = errors$Histmean,
+                Ensemble = errors$EnsRF)
 
 df1 = melt(df, id="building")
 g1 = ggplot(df1, aes(variable, value, color = variable)) +
@@ -39,10 +39,10 @@ g3
 # frame the data
 df = data.frame(building = as.character(errors$building),
                 numTrain = errors$numTrainDays,
-                HistMean = errors$Histmean,
-                EnsRF = errors$EnsRF)
+                IDS = errors$Histmean,
+                Ensemble = errors$EnsRF)
 df1 = melt(df, id = c("building","numTrain"))
-g1 = ggplot(df1) + 
+g1 = ggplot(df1) + theme_bw() +
       geom_point(size=3,
                  aes(numTrain,value,
                      color = variable,
