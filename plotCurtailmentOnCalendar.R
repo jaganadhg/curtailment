@@ -9,6 +9,7 @@ library(reshape2)
 library(plyr)
 library(scales)
 
+setwd("~/Desktop/curtailment/data/")
 # read curtailment data for each event
 events = read.csv("curtailment-FB.csv")
 
