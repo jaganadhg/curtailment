@@ -7,12 +7,16 @@ fList = list.files()
 numBds = length(fList)
 
 # do for each building
+allPreds1 = NULL
+allPreds2 = NULL
+allPreds3 = NULL
+allObsx = NULL
+
 for (i in 1:numBds){
   bd = substr(fList[i],1,3)
+  cat(bd,",")
   
   #---------------------------------------
-  #learn ensemble model from training data
-  
   # read observed values
   setwd("~/Desktop/curtailment/Obs/wm/")
   allObs = read.csv(fList[i],header=TRUE,as.is=TRUE)
@@ -48,26 +52,33 @@ for (i in 1:numBds){
   predsKNN = read.csv(inFile,header=TRUE,as.is=TRUE)
   predsKNN = predsKNN[,2:17]
   
-  #RFmodels = list()
-  #preds1 = NULL
-  #preds2 = NULL
-  #preds3 = NULL
-  #obs = NULL
- 
+  #learn RF model
   preds1 = as.vector(as.matrix(predsHM))
   preds2 = as.vector(as.matrix(predsWS))
   preds3 = as.vector(as.matrix(predsKNN))
   obs = as.vector(as.matrix(allObs))
   
-  df = data.frame(preds1,
-                  preds2,
-                  preds3,
-                  obs)
-  myRF = randomForest(obs ~ preds1 + preds2 + preds3, data = df, method = "anova")
-  #RFmodels[[j]] = myRF
-  
-  #---------------------------------------
-  # make predictions for the test data 
+  allPreds1 = c(allPreds1,preds1)
+  allPreds2 = c(allPreds2,preds2)
+  allPreds3 = c(allPreds3,preds3)
+  allObsx = c(allObsx,obs)
+}
+
+# learn global model for ALL buildings
+df = data.frame(allPreds1,
+                allPreds2,
+                allPreds3,
+                allObsx)
+myRF = randomForest(allObsx ~ allPreds1 + allPreds2 + allPreds3, 
+                    data = df, method = "anova")
+
+
+#---------------------------------------
+#do predictions for all buildings using the GLOBAL model
+
+for (i in 1:numBds){
+  bd = substr(fList[i],1,3)
+  cat(bd,",")
   
   # read observed data
   setwd("~/Desktop/curtailment/Obs/test/")
@@ -106,34 +117,30 @@ for (i in 1:numBds){
   predsKNNtest = read.csv(inFile,header=TRUE,as.is=TRUE)
   predsKNNtest = predsKNNtest[,2:17]
   
-  # do for each interval
-  #ensRFpreds = NULL
-  preds1 = as.vector(as.matrix(predsHM))
-  preds2 = as.vector(as.matrix(predsWS))
-  preds3 = as.vector(as.matrix(predsKNN))
-  obs = as.vector(as.matrix(allObs))
+  # make predictions
+  allPreds1 = as.vector(as.matrix(predsHMtest))
+  allPreds2 = as.vector(as.matrix(predsWStest))
+  allPreds3 = as.vector(as.matrix(predsKNNtest))
   
-  for (j in 1:16){
-    
-    preds = predict(RFmodels, 
-                  newdata = data.frame(preds1 = predsHMtest[,j],
-                                       preds2 = predsWStest[,j],
-                                       preds3 = predsKNNtest[,j]))
-    ensRFpreds = cbind(ensRFpreds, preds)
-  }
+  predsT = predict(myRF, 
+                   newdata = data.frame(allPreds1,
+                                        allPreds2,
+                                        allPreds3))
+  # put the preds back in matrix form
+  predsT = matrix(predsT,ncol=16)
   
   # calculate errors
-  ape = abs(ensRFpreds - obsTest)/obsTest
+  ape = abs(predsT - obsTest)/obsTest
   mape = apply(ape,1,mean)
   
   # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/ensRF-test/")
-  df2 = data.frame(date = obDates, preds=ensRFpreds)
+  setwd("~/Desktop/curtailment/Predictions/ensRFglobal-test/")
+  df2 = data.frame(date = obDates, preds=predsT)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
   
   # save errors
-  setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
+  setwd("~/Desktop/curtailment/MAPE/mape-ensRFglobal/")
   opFile = paste("mape-ensrf-",substr(fList[i],1,3),".csv",sep="")
   write.csv(mape,opFile,row.names=F)    
   
