@@ -1,5 +1,5 @@
 # ensRF: HM, WS, KNN 
-# global RF model
+# single global RF model for ALL buildings
 
 library(randomForest)
 setwd("~/Desktop/curtailment/Obs/wm/")

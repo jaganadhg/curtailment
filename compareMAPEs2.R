@@ -146,7 +146,7 @@ df1[rowx+2,] = c("Std. dev Error",sum(df$numTestDays),sum(df$numTrainDays),
                 sd(df$WS),sd(df$KNN),sd(df$EnsRF),
                 sd(df$EnsRFpb),sd(df$EnsRFglobal))
 
-write.csv(df1,"../avg-mapes-new.csv",row.names=F)
+write.csv(df1,"../avg-mapes-2.csv",row.names=F)
 
 # remove the last row of averages
 #df = df[-(rowx+1),]

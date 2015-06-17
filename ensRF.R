@@ -1,4 +1,5 @@
 # ensRF: HM, WS, KNN 
+# learns one RF model per interval per building
 
 library(randomForest)
 setwd("~/Desktop/curtailment/Obs/wm/")
