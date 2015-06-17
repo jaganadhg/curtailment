@@ -33,7 +33,8 @@ allDayCounts = list()
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
-
+  cat(bd, ",")
+  
   # find DR vector file names
   setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))
@@ -57,6 +58,8 @@ for (j in 1:numBuildings){
   # update numdays
   fList = fList[-skipped]
   numDays = length(fList)
+  
+  #-------------------
   numObsDays = round((2/3)*numDays)
   numTestDays = numDays - numObsDays
   
@@ -94,6 +97,7 @@ for (j in 1:numBuildings){
     allDayCounts[[j]] = obsDayCount
   } 
   
+  #-------------------------
   # save predicted values  
   setwd("~/Desktop/curtailment/Predictions/histmean-test/")
   df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
