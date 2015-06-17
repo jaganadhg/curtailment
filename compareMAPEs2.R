@@ -102,7 +102,7 @@ for (i in 1:numFiles){
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
-                IDS = avgError,
+                Histmean = avgError,
                 WD = avgWDerror,
                 WM = avgWMerror,
                 WS = avgWSerror,
@@ -119,7 +119,7 @@ rownames(df) = NULL
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,IDS,EnsRF,EnsRFpb,EnsRFglobal))
+               c(building,Histmean,EnsRF,EnsRFpb,EnsRFglobal))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable), size=1)
