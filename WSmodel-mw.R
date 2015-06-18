@@ -3,9 +3,10 @@
 # morning factor: 4 hrs before DR 
 # Traindata is 2/3 of the entire data.
 
-# Expanding window (EW)
+# Moving Window (MW)
+# Training window width is static = 2/3 the data
 # Starts from initial 2/3 of the data in the training window
-# At each iteration one new data is added
+# At each iteration one new data is added and one last one is dropped
 
 library(MASS)
 beginDR = 54 # 1:15 PM
@@ -76,21 +77,22 @@ for (j in 1:numBuildings){
   testDates = substr(fList[testIndices],1,14)
   cat("Total days = ", numDays, 
       ", Num of testdays = ", numTestDays, "\n")
-  cat("Num of traindays = ")
+  cat("Train Range = ")
   
   mape = numeric(numTestDays)
   allPreds = NULL
   
   # make predictions
   for (i in 1:numTestDays){
-    cat(numTrainDays, " ,")
+    beginTrain = i
+    cat(beginTrain, ":", numTrainDays, " ,", sep="")
     
     # test data
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,inDRindices]
     
     # train data
-    trainIndices = c(1:numTrainDays)
+    trainIndices = c(beginTrain:numTrainDays)
     trainData = DRvectors[trainIndices,inDRindices]
    
     #--------------------------
@@ -139,7 +141,7 @@ for (j in 1:numBuildings){
   } # done for all test days 
   
   # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/ws-ew-test/")
+  setwd("~/Desktop/curtailment/Predictions/ws-mw-test/")
   df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
@@ -148,13 +150,13 @@ for (j in 1:numBuildings){
 
 
 # save results
-setwd("~/Desktop/curtailment/MAPE/mape-ws-ew/")
+setwd("~/Desktop/curtailment/MAPE/mape-ws-mw/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
   df = data.frame(mape = allMape[[i]])
-  opFile = paste("mape-ws-ew-",allBuildings[i],".csv",sep="")
+  opFile = paste("mape-ws-mw-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
