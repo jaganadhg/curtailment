@@ -29,11 +29,11 @@ numBuildings = length(allBuildings)
 
 # do for all buildings
 allMape = list()
-allDayCounts = list()
+trainDayCounts = list()
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
-  cat(bd, ",")
+  cat("\n", bd, ",")
   
   # find DR vector file names
   setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
@@ -60,31 +60,34 @@ for (j in 1:numBuildings){
   numDays = length(fList)
   
   #-------------------
-  numObsDays = round((2/3)*numDays)
-  numTestDays = numDays - numObsDays
-  
-  obsIndices = c(1:numObsDays)
-  testIndices = c((numObsDays+1):numDays)
-  
-  #trainIndices = c(1:numTrainDays)
-  #testIndices = c((numTrainDays+1):numDays)
+  # determine initial num of train days & fixed num of test days
+  numTrainDays = round((2/3)*numDays)
+  numTestDays = numDays - numTrainDays
+  testIndices = c((numTrainDays+1):numDays)  
   testDates = substr(fList[testIndices],1,14)
+  cat("Total days = ", numDays, 
+      ", Num of testdays = ", numTestDays, "\n")
+  cat("Num of traindays = ")
   
-  ######################## 
   mape = numeric(numTestDays)
-  obsDayCount = numeric(numTestDays)
   allPreds = NULL
   
   # make predictions
   for (i in 1:numTestDays){
+    cat(numTrainDays, " ,")
+    
+    # test data
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,(beginDR:endDR)]
-    obsData = DRvectors[obsIndices,(beginDR:endDR)] 
     
-    if(is.null(dim(obsData))){ # observed data for just 1 day
-      predVector = obsData
+    # train data
+    trainIndices = c(1:numTrainDays)
+    trainData = DRvectors[trainIndices,(beginDR:endDR)] 
+    
+    if(is.null(dim(trainData))){ # observed data for just 1 day
+      predVector = trainData
     }else{
-      predVector = apply(obsData,2,mean)  
+      predVector = apply(trainData,2,mean)  
     }
     allPreds = rbind(allPreds,predVector)
     
@@ -93,21 +96,26 @@ for (j in 1:numBuildings){
     mape[i] = mean(ape)
     allMape[[j]] = mape
     
-    obsDayCount[i] = length(obsIndices)
-    allDayCounts[[j]] = obsDayCount
-  } 
+    #trainDayCount[i] = length(trainIndices)
+    #trainDayCounts[[j]] = trainDayCount
+    
+    # add this day to the training data
+    numTrainDays = numTrainDays + 1
+  
+  } # done for all test days
   
   #-------------------------
   # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/histmean-test/")
+  setwd("~/Desktop/curtailment/Predictions/histmean-ew-test/")
   df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
   
-}
+} # done for all buildings
+
 
 # save results
-setwd("~/Desktop/curtailment/MAPE/mape-histmean/")
+setwd("~/Desktop/curtailment/MAPE/mape-histmean-ew/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
