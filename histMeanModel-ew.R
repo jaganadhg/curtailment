@@ -29,8 +29,6 @@ numBuildings = length(allBuildings)
 
 # do for all buildings
 allMape = list()
-trainDayCounts = list()
-
 for (j in 1:numBuildings){
   bd = allBuildings[j]
   cat("\n", bd, ",")
@@ -96,9 +94,6 @@ for (j in 1:numBuildings){
     mape[i] = mean(ape)
     allMape[[j]] = mape
     
-    #trainDayCount[i] = length(trainIndices)
-    #trainDayCounts[[j]] = trainDayCount
-    
     # add this day to the training data
     numTrainDays = numTrainDays + 1
   
@@ -120,9 +115,8 @@ for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
   }
-  df = data.frame(mape = allMape[[i]],
-                  daycounts = allDayCounts[[i]])
-  opFile = paste("mape-histmean-",allBuildings[i],".csv",sep="")
+  df = data.frame(mape = allMape[[i]])
+  opFile = paste("mape-histmean-ew-",allBuildings[i],".csv",sep="")
   write.csv(df,opFile,row.names=F)    
 }
 
