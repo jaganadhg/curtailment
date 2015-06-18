@@ -39,7 +39,7 @@ numBuildings = length(allBuildings)
 #-------------------------------
 # do for all buildings
 allMape = list()
-allDayCounts = list()
+#allDayCounts = list()
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
@@ -67,23 +67,33 @@ for (j in 1:numBuildings){
   # update numdays
   fList = fList[-skipped]
   numDays = length(fList)
+  
+  #-------------------
+  # determine initial num of train days & fixed num of test days
   numTrainDays = round((2/3)*numDays)
   numTestDays = numDays - numTrainDays
-  
-  trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
   testDates = substr(fList[testIndices],1,14)
+  cat("Total days = ", numDays, 
+      ", Num of testdays = ", numTestDays, "\n")
+  cat("Num of traindays = ")
   
-  ######################## 
   mape = numeric(numTestDays)
-  obsDayCount = numeric(numTestDays)
+  #obsDayCount = numeric(numTestDays)
   allPreds = NULL
   
   # make predictions
   for (i in 1:numTestDays){
+    cat(numTrainDays, " ,")
+    
+    # test data
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,inDRindices]
+    
+    # train data
+    trainIndices = c(1:numTrainDays)
     trainData = DRvectors[trainIndices,inDRindices]
+   
     #--------------------------
     # define preDR data
     preDRsignatureTest = DRvectors[testIndex,preDRindices]
@@ -124,9 +134,12 @@ for (j in 1:numBuildings){
     mape[i] = mean(ape)
     allMape[[j]] = mape
     
-    obsDayCount[i] = length(trainIndices)
-    allDayCounts[[j]] = obsDayCount
-  } 
+    # add this day to the training data
+    numTrainDays = numTrainDays + 1
+    
+    #obsDayCount[i] = length(trainIndices)
+    #allDayCounts[[j]] = obsDayCount
+  } # done for all test days 
   
   # save predicted values  
   setwd("~/Desktop/curtailment/Predictions/ws-test/")
@@ -134,7 +147,7 @@ for (j in 1:numBuildings){
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
   
-}
+} # done for all buildings
 
 # save results
 setwd("~/Desktop/curtailment/MAPE/mape-ws/")

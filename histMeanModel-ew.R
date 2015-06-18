@@ -66,6 +66,9 @@ for (j in 1:numBuildings){
   cat("Total days = ", numDays, 
       ", Num of testdays = ", numTestDays, "\n")
   cat("Num of traindays = ")
+  cat("Total days = ", numDays, 
+      ", Num of testdays = ", numTestDays, "\n")
+  cat("Num of traindays = ")
   
   mape = numeric(numTestDays)
   allPreds = NULL
