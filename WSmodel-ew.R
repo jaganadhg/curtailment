@@ -142,7 +142,7 @@ for (j in 1:numBuildings){
   } # done for all test days 
   
   # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/ws-test/")
+  setwd("~/Desktop/curtailment/Predictions/ws-ew-test/")
   df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
@@ -150,7 +150,7 @@ for (j in 1:numBuildings){
 } # done for all buildings
 
 # save results
-setwd("~/Desktop/curtailment/MAPE/mape-ws/")
+setwd("~/Desktop/curtailment/MAPE/mape-ws-ew/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
