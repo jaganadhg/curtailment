@@ -74,36 +74,44 @@ for (j in 1:numBuildings){
   numTestDays = numDays - numTrainDays
   testIndices = c((numTrainDays+1):numDays)
   testDates = substr(fList[testIndices],1,14)
+  cat("Total days = ", numDays, 
+      ", Num of testdays = ", numTestDays, "\n")
+  cat("Num of traindays = ")
   
-#  trainIndices = c(1:numTrainDays)
-  
-  trainData = DRvectors[trainIndices,]
-  #cluster training Days
-  if(length(trainIndices)<=3){
-    numClusters = 1
-  }else{
-    if(length(trainIndices)<=6){
-      mx = length(trainIndices) - 1
-    }else{
-      mx = 5 
-    }
-    c = NbClust(trainData, distance = "euclidean", 
-                min.nc = 2, max.nc = 2,
-                method = "complete", index = "ch")
-    numClusters = c$Best.nc[1]  
-  }  
-  clusters = kmeans(trainData, numClusters)
-  dailyProfile = clusters$centers
-    
-  ######################## 
+  #-----------------
   mape = numeric(numTestDays)
-  obsDayCount = numeric(numTestDays)
   allPreds = NULL
   
   # make predictions
   for (i in 1:numTestDays){
+    # test data
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,inDRindices]
+    
+    # train data
+    trainIndices = c(1:numTrainDays)
+    trainData = DRvectors[trainIndices,inDRindices]
+    
+    trainIndices = c(1:numTrainDays)
+    
+    trainData = DRvectors[trainIndices,]
+    #cluster training Days
+    if(length(trainIndices)<=3){
+      numClusters = 1
+    }else{
+      if(length(trainIndices)<=6){
+        mx = length(trainIndices) - 1
+      }else{
+        mx = 5 
+      }
+      c = NbClust(trainData, distance = "euclidean", 
+                  min.nc = 2, max.nc = 2,
+                  method = "complete", index = "ch")
+      numClusters = c$Best.nc[1]  
+    }  
+    clusters = kmeans(trainData, numClusters)
+    dailyProfile = clusters$centers
+    
     #--------------------------
     # define preDR data
     preDRsignatureTest = DRvectors[testIndex,preDRindices]
