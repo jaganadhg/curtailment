@@ -67,12 +67,15 @@ for (j in 1:numBuildings){
   # update numdays
   fList = fList[-skipped]
   numDays = length(fList)
+  
+  #-------------------
+  # determine initial num of train days & fixed num of test days
   numTrainDays = round((2/3)*numDays)
   numTestDays = numDays - numTrainDays
-  
-  trainIndices = c(1:numTrainDays)
   testIndices = c((numTrainDays+1):numDays)
   testDates = substr(fList[testIndices],1,14)
+  
+#  trainIndices = c(1:numTrainDays)
   
   trainData = DRvectors[trainIndices,]
   #cluster training Days
