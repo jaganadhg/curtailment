@@ -14,7 +14,8 @@ filesWS = list.files(pattern="*.csv")
 numFiles = length(filesWS)
 numTestDays = numeric(numFiles)
 numTrainDays = numeric(numFiles)
-
+numTotalDays = numeric(numFiles)  
+  
 # 1. find avg histmean mape for all files
 avgError = numeric(numFiles)
 for (i in 1:numFiles){
@@ -23,9 +24,11 @@ for (i in 1:numFiles){
   numTestDays[i] = dim(errors)[1]
   numTrainDays[i] = errors$daycounts[1]
 }
+numTotalDays = numTrainDays + numTestDays
 
 #----------------------------
 # save results 
+# 1. Train + Test
 df = data.frame(building = substr(filesWS,9,11),
                 numTrainDays = numTrainDays,
                 numTestDays = numTestDays)
@@ -55,13 +58,30 @@ stack2 = stack1 +
           theme(axis.text = element_text(size=18))
 stack2
 
-#-----------------------
-# plot histograms
-# distTrain = ggplot(df, aes(x=numTrainDays)) + 
-#               geom_histogram(binwidth = 1) 
-# distTrain
-# 
-# distTest = ggplot(df, aes(x=numTestDays)) + 
-#             geom_histogram(binwidth = 1) 
-# distTest
+#---------------------------
+# 2. Total days
+df = data.frame(building = substr(filesWS,9,11),
+                numTotalDays = numTotalDays)
+
+# leave out spurious data buildings
+df = df[-c(16, 24, 25),] #SCC, SCB, LRC
+rownames(df) = NULL
+
+df$building = newBD
+df$building = factor(df$building, levels = df$building)
+
+# plot barplot
+stack1 = ggplot(df, aes(x = building, y = numTotalDays, 
+                        fill = "red")) +
+  theme_bw() +
+  geom_bar(stat="identity") + 
+  xlab("Building") + ylab("Count") +
+  theme(legend.position = "none") +
+  theme(legend.title = element_blank()) +
+  theme(axis.text.x = element_text(angle=90, vjust=1))
+
+stack2 = stack1 +
+  theme(axis.title = element_text(size=18)) +
+  theme(axis.text = element_text(size=18))
+stack2
 
