@@ -43,7 +43,8 @@ allDayCounts = list()
 
 for (j in 1:numBuildings){
   bd = allBuildings[j]
-
+  cat("\n", bd, ",")
+  
   # find DR vector file names
   setwd("~/Desktop/curtailment/makedatasets/DRdataset/")
   fList = list.files(pattern = paste("^",bd,sep=""))

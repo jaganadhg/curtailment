@@ -112,6 +112,29 @@ for (i in 1:numFiles){
   avgKNNerror[i] = mean(errors$mape)
 }
 
+# 5a. find avg knn mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-knn-ew/")
+filesKNNew = list.files(pattern="*.csv")
+numFiles = length(filesKNNew)
+
+avgKNNewError = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesKNNew[i])
+  avgKNNewError[i] = mean(errors$mape)
+}
+
+# 5b. find avg knn mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-knn-mw/")
+filesKNNmw = list.files(pattern="*.csv")
+numFiles = length(filesKNNmw)
+
+avgKNNmwError = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesKNNmw[i])
+  avgKNNmwError[i] = mean(errors$mape)
+}
+
+#----------------------------
 # 6. find avg ensRF mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
 filesEnsRF = list.files(pattern="*.csv")
