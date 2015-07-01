@@ -66,7 +66,7 @@ for (i in 1:numFiles){
 #----------------------------
 
 # 6. find avg ensRF mape for all files
-setwd("~/Desktop/curtailment/MAPE/mape-ensrf/")
+setwd("~/Desktop/curtailment/MAPE/mape-ensRF/")
 filesEnsRF = list.files(pattern="*.csv")
 numFiles = length(filesEnsRF)
 
@@ -77,7 +77,7 @@ for (i in 1:numFiles){
 }
 
 # 7. find avg ensRFpb mape for all files
-setwd("~/Desktop/curtailment/MAPE/mape-ensrfpb/")
+setwd("~/Desktop/curtailment/MAPE/mape-ensRFpb/")
 filesEnsRFpb = list.files(pattern="*.csv")
 numFiles = length(filesEnsRFpb)
 
@@ -104,17 +104,9 @@ df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
                 IDS = avgError,
-                WD = avgWDerror,
-                WM = avgWMerror,
-                WS = avgWSerror,
-                KNN = avgKNNerror,
-                KNNglobal = avgKNNgError,
-                EnsLM = avgEnsLMerror,
-                EnsLM2 = avgEnsLMerror2,
-                EnsLM3 = avgEnsLMerror3,
-                EnsRT = avgEnsRTerror,
-                Ensemble = avgEnsRFerror,
-                EnsRF2 = avgEnsRFerror2)
+                EnsRF = avgEnsRFerror,
+                EnsRFpb = avgEnsRFpbError,
+                EnsRFglobal = avgEnsRFglobalError)
 
 # leave out spurious data buildings
 df = df[-c(16, 24, 25),] #SCC, SCB, LRC
@@ -123,7 +115,7 @@ rownames(df) = NULL
 #-------------------------
 #plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,IDS,Ensemble))
+               c(building,IDS,EnsRF,EnsRFpb,EnsRFglobal))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable), size=1)
