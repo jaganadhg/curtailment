@@ -10,7 +10,7 @@ numFiles = length(filesHM)
 numTestDays = numeric(numFiles)
 numTrainDays = numeric(numFiles)
 
---------------
+#--------------
 # 1. find avg histmean mape for all files
 avgError = numeric(numFiles)
 for (i in 1:numFiles){
@@ -182,6 +182,8 @@ df = data.frame(building = substr(filesWD,9,11),
                 WSew = avgWSewError,
                 WSmw = avgWSmwError,
                 KNN = avgKNNerror,
+                KNNew = avgKNNewError,
+                KNNmw = avgKNNmwError,
                 EnsRF = avgEnsRFerror,
                 EnsRFpb = avgEnsRFpberror,
                 EnsRFglobal = avgEnsRFglobalerror
@@ -240,6 +242,22 @@ g1 = cdfplot + theme_bw() +
   theme(axis.text = element_text(size=14))
 g1
 
+#4.plot KNN ecdf 
+df1 = subset(df, select =
+               c(building,KNN,KNNew,KNNmw))
+df2 = melt(df1,id="building")
+cdfplot = ggplot(df2, aes(x=value)) + 
+  stat_ecdf(aes(colour = variable), size=1)
+g1 = cdfplot + theme_bw() + 
+  xlab("MAPE") + 
+  ylab("Fraction of Buildings") + 
+  theme(legend.position="top")+
+  theme(legend.title = element_blank()) +
+  theme(legend.text = element_text(size = 16)) +
+  theme(axis.title = element_text(size=14)) +
+  theme(axis.text = element_text(size=14))
+g1
+
 #---------------------
 # add a row of avg error values
 df$building = as.character(df$building)
@@ -256,6 +274,8 @@ df1[rowx+1,] = c("Avg Error",
                  mean(df$WSew),
                  mean(df$WSmw),
                  mean(df$KNN),
+                 mean(df$KNNew),
+                 mean(df$KNNmw),
                  mean(df$EnsRF),
                  mean(df$EnsRFpb),
                  mean(df$EnsRFglobal))
@@ -270,6 +290,8 @@ df1[rowx+2,] = c("Std. dev Error",
                  sd(df$WSew),
                  sd(df$WSmw),
                  sd(df$KNN),
+                 sd(df$KNNew),
+                 sd(df$KNNmw),
                  sd(df$EnsRF),
                  sd(df$EnsRFpb),
                  sd(df$EnsRFglobal))
