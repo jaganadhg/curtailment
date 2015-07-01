@@ -169,9 +169,9 @@ df = df[-c(16, 24, 25),] #SCC, SCB, LRC
 rownames(df) = NULL
 
 #-------------------------
-#plot ecdf with ggplot
+#1. plot ecdf with ggplot
 df1 = subset(df, select =
-               c(building,Histmean,EnsRF,EnsRFpb,EnsRFglobal))
+               c(building,IDS,EnsRF,EnsRFpb,EnsRFglobal))
 df2 = melt(df1,id="building")
 cdfplot = ggplot(df2, aes(x=value)) + 
             stat_ecdf(aes(colour = variable), size=1)
@@ -184,6 +184,39 @@ g1 = cdfplot + theme_bw() +
           theme(axis.title = element_text(size=14)) +
           theme(axis.text = element_text(size=14))
 g1
+
+#2. plot IDS ecdf 
+df1 = subset(df, select =
+               c(building,IDS,IDSew,IDSmw))
+df2 = melt(df1,id="building")
+cdfplot = ggplot(df2, aes(x=value)) + 
+  stat_ecdf(aes(colour = variable), size=1)
+g1 = cdfplot + theme_bw() + 
+  xlab("MAPE") + 
+  ylab("Fraction of Buildings") + 
+  theme(legend.position="top")+
+  theme(legend.title = element_blank()) +
+  theme(legend.text = element_text(size = 16)) +
+  theme(axis.title = element_text(size=14)) +
+  theme(axis.text = element_text(size=14))
+g1
+
+#3. plot WS ecdf 
+df1 = subset(df, select =
+               c(building,WS,WSew,WSmw))
+df2 = melt(df1,id="building")
+cdfplot = ggplot(df2, aes(x=value)) + 
+  stat_ecdf(aes(colour = variable), size=1)
+g1 = cdfplot + theme_bw() + 
+  xlab("MAPE") + 
+  ylab("Fraction of Buildings") + 
+  theme(legend.position="top")+
+  theme(legend.title = element_blank()) +
+  theme(legend.text = element_text(size = 16)) +
+  theme(axis.title = element_text(size=14)) +
+  theme(axis.text = element_text(size=14))
+g1
+
 #---------------------
 # add a row of avg error values
 df$building = as.character(df$building)
