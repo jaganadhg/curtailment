@@ -10,6 +10,7 @@ numFiles = length(filesHM)
 numTestDays = numeric(numFiles)
 numTrainDays = numeric(numFiles)
 
+--------------
 # 1. find avg histmean mape for all files
 avgError = numeric(numFiles)
 for (i in 1:numFiles){
@@ -17,6 +18,29 @@ for (i in 1:numFiles){
   avgError[i] = mean(errors$mape)
 }
 
+# 1a. find avg histmean-ew mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-histmean-ew/")
+filesHMew = list.files(pattern="*.csv")
+numFiles = length(filesHMew)
+
+avgErrorEW = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesHMew[i])
+  avgErrorEW[i] = mean(errors$mape)
+}
+
+# 1b. find avg histmean-mw mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-histmean-mw/")
+filesHMmw = list.files(pattern="*.csv")
+numFiles = length(filesHMmw)
+
+avgErrorMW = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesHMmw[i])
+  avgErrorMW[i] = mean(errors$mape)
+}
+
+#-------------------------
 # 2. find avg wd mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-wd/")
 filesWD = list.files(pattern="*.csv")
@@ -28,6 +52,7 @@ for (i in 1:numFiles){
   avgWDerror[i] = mean(errors$mape)
 }
 
+#-------------------------
 # 3. find avg wm mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-wm/")
 filesWM = list.files(pattern="*.csv")
@@ -39,6 +64,7 @@ for (i in 1:numFiles){
   avgWMerror[i] = mean(errors$mape)
 }
 
+#-------------------------
 # 4. find avg ws mape for all files
 setwd("~/Desktop/curtailment/MAPE/mape-ws/")
 filesWS = list.files(pattern="*.csv")
@@ -50,6 +76,28 @@ for (i in 1:numFiles){
   avgWSerror[i] = mean(errors$mape)
   numTestDays[i] = dim(errors)[1]
   numTrainDays[i] = errors$daycounts[1]
+}
+
+# 4a. find avg ws mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ws-ew/")
+filesWSew = list.files(pattern="*.csv")
+numFiles = length(filesWSew)
+
+avgWSewError = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesWSew[i])
+  avgWSewError[i] = mean(errors$mape)
+}
+
+# 4b. find avg ws mape for all files
+setwd("~/Desktop/curtailment/MAPE/mape-ws-mw/")
+filesWSmw = list.files(pattern="*.csv")
+numFiles = length(filesWSmw)
+
+avgWSmwError = numeric(numFiles)
+for (i in 1:numFiles){
+  errors = read.csv(filesWSmw[i])
+  avgWSmwError[i] = mean(errors$mape)
 }
 
 #----------------------------
@@ -102,10 +150,14 @@ for (i in 1:numFiles){
 df = data.frame(building = substr(filesWD,9,11),
                 numTestDays = numTestDays,
                 numTrainDays = numTrainDays,
-                Histmean = avgError,
+                IDS = avgError,
+                IDSew = avgErrorEW,
+                IDSmw = avgErrorMW,
                 WD = avgWDerror,
                 WM = avgWMerror,
                 WS = avgWSerror,
+                WSew = avgWSewError,
+                WSmw = avgWSmwError,
                 KNN = avgKNNerror,
                 EnsRF = avgEnsRFerror,
                 EnsRFpb = avgEnsRFpberror,
@@ -137,14 +189,34 @@ g1
 df$building = as.character(df$building)
 rowx = dim(df)[1]
 df1 = df
-df1[rowx+1,] = c("Avg Error",sum(df$numTestDays),sum(df$numTrainDays),
-                mean(df$Histmean),mean(df$WD),mean(df$WM),
-                mean(df$WS),mean(df$KNN),mean(df$EnsRF),
-                mean(df$EnsRFpb),mean(df$EnsRFglobal))
-df1[rowx+2,] = c("Std. dev Error",sum(df$numTestDays),sum(df$numTrainDays),
-                sd(df$Histmean),sd(df$WD),sd(df$WM),
-                sd(df$WS),sd(df$KNN),sd(df$EnsRF),
-                sd(df$EnsRFpb),sd(df$EnsRFglobal))
+df1[rowx+1,] = c("Avg Error",
+                 sum(df$numTestDays),sum(df$numTrainDays),
+                 mean(df$IDS),
+                 mean(df$IDSew),
+                 mean(df$IDSmw),
+                 mean(df$WD),
+                 mean(df$WM),
+                 mean(df$WS),
+                 mean(df$WSew),
+                 mean(df$WSmw),
+                 mean(df$KNN),
+                 mean(df$EnsRF),
+                 mean(df$EnsRFpb),
+                 mean(df$EnsRFglobal))
+df1[rowx+2,] = c("Std. dev Error",
+                 sum(df$numTestDays),sum(df$numTrainDays),
+                 sd(df$IDS),
+                 sd(df$IDSew),
+                 sd(df$IDSmw),
+                 sd(df$WD),
+                 sd(df$WM),
+                 sd(df$WS),
+                 sd(df$WSew),
+                 sd(df$WSmw),
+                 sd(df$KNN),
+                 sd(df$EnsRF),
+                 sd(df$EnsRFpb),
+                 sd(df$EnsRFglobal))
 
 write.csv(df1,"../avg-mapes-2.csv",row.names=F)
 
