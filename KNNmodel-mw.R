@@ -2,9 +2,9 @@
 # based on KNN model - clusters training data into N clusters
 # Traindata is 2/3 of the entire data.
 
-# Expanding window (EW)
+# Moving window (MW)
 # Starts from initial 2/3 of the data in the training window
-# At each iteration one new data is added
+# At each iteration one new data is added and one last one is dropped
 
 library(MASS)
 library(NbClust)
@@ -85,12 +85,15 @@ for (j in 1:numBuildings){
   
   # make predictions
   for (i in 1:numTestDays){
+    beginTrain = i
+    cat(beginTrain, ":", numTrainDays, " ,", sep="")
+    
     # test data
     testIndex = testIndices[i]
     testVector = DRvectors[testIndex,inDRindices]
     
     # train data
-    trainIndices = c(1:numTrainDays)
+    trainIndices = c(beginTrain:numTrainDays)
     trainData = DRvectors[trainIndices,]
         
     #cluster training Days
@@ -149,7 +152,7 @@ for (j in 1:numBuildings){
   } #done for each test day 
   
   # save predicted values  
-  setwd("~/Desktop/curtailment/Predictions/knn-ew-test/")
+  setwd("~/Desktop/curtailment/Predictions/knn-mw-test/")
   df2 = data.frame(date = substr(testDates,5,15), preds=allPreds)
   opFile = paste(bd,"-preds.csv",sep="")
   write.csv(df2,opFile,row.names=F) 
@@ -157,7 +160,7 @@ for (j in 1:numBuildings){
 }
 
 # save results
-setwd("~/Desktop/curtailment/MAPE/mape-knn-ew/")
+setwd("~/Desktop/curtailment/MAPE/mape-knn-mw/")
 for(i in 1:length(allMape)){
   if(is.null(allMape[[i]])){
     next  
